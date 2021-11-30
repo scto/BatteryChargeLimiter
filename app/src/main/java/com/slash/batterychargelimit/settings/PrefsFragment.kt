@@ -29,20 +29,23 @@ class PrefsFragment : PreferenceFragmentCompat() {
         }
 
         if (dialogFragment != null) {
-            val settings = view!!.context.getSharedPreferences(Constants.SETTINGS, 0)
+            val settings = requireView().context.getSharedPreferences(Constants.SETTINGS, 0)
             if (!settings.getBoolean("has_opened_ctrl_file", false)) {
-                AlertDialog.Builder(view!!.context)
-                        .setTitle(R.string.control_file_heads_up_title)
-                        .setMessage(R.string.control_file_heads_up_desc)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.control_understand) { _, _ ->
-                            settings.edit().putBoolean("has_opened_ctrl_file", true).apply()
-                            dialogFragment.setTargetFragment(this, 0)
-                            dialogFragment.show(this.fragmentManager!!, ControlFileDialogFragmentCompat::class.java.simpleName)
-                        }.create().show()
+                AlertDialog.Builder(requireView().context)
+                    .setTitle(R.string.control_file_heads_up_title)
+                    .setMessage(R.string.control_file_heads_up_desc)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.control_understand) { _, _ ->
+                        settings.edit().putBoolean("has_opened_ctrl_file", true).apply()
+                        dialogFragment.setTargetFragment(this, 0)
+                        dialogFragment.show(
+                            this.parentFragmentManager,
+                            ControlFileDialogFragmentCompat::class.java.simpleName
+                        )
+                    }.create().show()
             } else {
                 dialogFragment.setTargetFragment(this, 0)
-                dialogFragment.show(this.fragmentManager!!, ControlFileDialogFragmentCompat::class.java.simpleName)
+                dialogFragment.show(this.parentFragmentManager, ControlFileDialogFragmentCompat::class.java.simpleName)
             }
         } else {
             super.onDisplayPreferenceDialog(preference)
@@ -62,7 +65,7 @@ class PrefsFragment : PreferenceFragmentCompat() {
 
         theme.setOnPreferenceChangeListener { preference, _ ->
             if (preference is ListPreference) {
-                activity!!.recreate()
+                requireActivity().recreate()
             }
             true
         }
@@ -81,14 +84,14 @@ class PrefsFragment : PreferenceFragmentCompat() {
         }
 
         ctrlFileSetupPreference.setOnPreferenceClickListener {
-            AlertDialog.Builder(view!!.context)
-                    .setTitle(R.string.control_file_alert_title)
-                    .setMessage(R.string.control_file_alert_desc)
-                    .setCancelable(false)
-                    .setPositiveButton(R.string.control_understand) { _, _ ->
-                        val ctrlFileIntent = Intent(view!!.context, CustomCtrlFileDataActivity::class.java)
-                        startActivity(ctrlFileIntent)
-                    }.create().show()
+            AlertDialog.Builder(requireView().context)
+                .setTitle(R.string.control_file_alert_title)
+                .setMessage(R.string.control_file_alert_desc)
+                .setCancelable(false)
+                .setPositiveButton(R.string.control_understand) { _, _ ->
+                    val ctrlFileIntent = Intent(requireView().context, CustomCtrlFileDataActivity::class.java)
+                    startActivity(ctrlFileIntent)
+                }.create().show()
             true
         }
 
@@ -108,9 +111,9 @@ class PrefsFragment : PreferenceFragmentCompat() {
     }
 
     private fun Context.getColorFromAttr(
-            @AttrRes attrColor: Int,
-            typedValue: TypedValue = TypedValue(),
-            resolveRefs: Boolean = true
+        @AttrRes attrColor: Int,
+        typedValue: TypedValue = TypedValue(),
+        resolveRefs: Boolean = true
     ): Int {
         theme.resolveAttribute(attrColor, typedValue, resolveRefs)
         return typedValue.data

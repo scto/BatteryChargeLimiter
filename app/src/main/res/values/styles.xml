@@ -1,8 +1,9 @@
 <!--This file is still a WIP-->
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="BaseTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
 
-        <item name="android:textColorPrimary" >@color/primary_text_color_selector</item>
+        <item name="android:textColorPrimary">@color/primary_text_color_selector</item>
         <item name="android:textColorSecondary">?attr/secondaryText</item>
 
         <item name="android:alertDialogTheme">@style/CustomAlertDialog</item>
@@ -89,11 +90,11 @@
         <item name="secondaryBackground">@color/darkerGray</item>
     </style>
 
-    <style name="AppThemeLight" parent="BaseThemeLight"/>
+    <style name="AppThemeLight" parent="BaseThemeLight" />
 
-    <style name="AppThemeDark" parent="BaseThemeDark"/>
+    <style name="AppThemeDark" parent="BaseThemeDark" />
 
-    <style name="AppThemeBlack" parent="BaseThemeBlack"/>
+    <style name="AppThemeBlack" parent="BaseThemeBlack" />
 
     <style name="AppThemeLight.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -120,7 +121,7 @@
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
-    <style name="CustomPicker" parent="Theme.MaterialComponents.NoActionBar" >
+    <style name="CustomPicker" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:textColorPrimary">?attr/primaryText</item>
         <item name="android:textColorSecondary">?attr/secondaryBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -219,8 +220,8 @@
         <item name="android:fadingEdge">none</item>
     </style>
     <!--<style name="MyEditText" parent="Theme.AppCompat.Light">-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
-        <!--<item name="colorControlNormal">?attr/secondaryText</item>-->
-        <!--<item name="colorControlActivated">?attr/colorAccent</item>-->
+    <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--<item name="colorControlNormal">?attr/secondaryText</item>-->
+    <!--<item name="colorControlActivated">?attr/colorAccent</item>-->
     <!--</style>-->
 </resources>

@@ -3,8 +3,9 @@ package com.slash.batterychargelimit.receivers
 import android.content.*
 import android.os.BatteryManager
 import android.os.Handler
-import android.preference.PreferenceManager
+import android.os.Looper
 import android.util.Log
+import androidx.preference.PreferenceManager
 import com.slash.batterychargelimit.Constants.CHARGING_CHANGE_TOLERANCE_MS
 import com.slash.batterychargelimit.Constants.LIMIT
 import com.slash.batterychargelimit.Constants.MAX_BACK_OFF_TIME
@@ -41,9 +42,13 @@ class BatteryReceiver(private val service: ForegroundService) : BroadcastReceive
             when (key) {
                 PrefsFragment.KEY_TEMP_FAHRENHEIT -> {
                     useFahrenheit = sharedPreferences.getBoolean(PrefsFragment.KEY_TEMP_FAHRENHEIT, false)
-                    service.setNotificationContentText(Utils.getBatteryInfo(service,
+                    service.setNotificationContentText(
+                        Utils.getBatteryInfo(
+                            service,
                             service.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))!!,
-                            useFahrenheit))
+                            useFahrenheit
+                        )
+                    )
                     service.updateNotification()
                 }
                 LIMIT, MIN -> {
@@ -128,7 +133,7 @@ class BatteryReceiver(private val service: ForegroundService) : BroadcastReceive
             if (switchState(CHARGE_STOP)) {
                 Log.d("Charging State", "CHARGE_STOP " + this.hashCode())
                 // play sound only the first time when the limit was reached
-                if(useNotificationSound && !chargedToLimit) {
+                if (useNotificationSound && !chargedToLimit) {
                     service.setNotificationSound()
                 }
                 // remember that we let the device charge until limit at least once
@@ -142,16 +147,20 @@ class BatteryReceiver(private val service: ForegroundService) : BroadcastReceive
                 }
 
                 // set the "maintain" notification, this must not change from now
-                service.setNotificationTitle(service.getString(R.string.maintaining_x_to_y,
-                        rechargePercentage, limitPercentage))
+                service.setNotificationTitle(
+                    service.getString(R.string.maintaining_x_to_y, rechargePercentage, limitPercentage)
+                )
                 service.setNotificationIcon(NOTIF_MAINTAIN)
                 service.setNotificationActionText(service.getString(R.string.dismiss))
             } else if (currentStatus == BatteryManager.BATTERY_STATUS_CHARGING
-                    && prefs.getBoolean(PrefsFragment.KEY_ENFORCE_CHARGE_LIMIT, true)) {
+                && prefs.getBoolean(PrefsFragment.KEY_ENFORCE_CHARGE_LIMIT, true)
+            ) {
                 //Double the back off time with every unsuccessful round up to MAX_BACK_OFF_TIME
                 backOffTime = (backOffTime * 2).coerceAtMost(MAX_BACK_OFF_TIME)
-                Log.d("Charging State", "Fixing state w. CHARGE_ON/CHARGE_OFF " + this.hashCode()
-                        + " (Delay: $backOffTime)")
+                Log.d(
+                    "Charging State",
+                    "Fixing state w. CHARGE_ON/CHARGE_OFF " + this.hashCode() + " (Delay: $backOffTime)"
+                )
                 // if the device did not stop charging, try to "cycle" the state to fix this
                 Utils.changeState(service, Utils.CHARGE_ON)
                 // schedule the charging stop command to be executed after CHARGING_CHANGE_TOLERANCE_MS
@@ -181,7 +190,7 @@ class BatteryReceiver(private val service: ForegroundService) : BroadcastReceive
         // unregister the listener that listens for relevant change events
         prefs.unregisterOnSharedPreferenceChangeListener(this.preferenceChangeListener)
         Utils.getSettings(context)
-                .unregisterOnSharedPreferenceChangeListener(this.preferenceChangeListener)
+            .unregisterOnSharedPreferenceChangeListener(this.preferenceChangeListener)
         // technically not necessary, but it prevents inlining of this required field
         // see end of https://developer.android.com/guide/topics/ui/settings.html#Listening
         this.preferenceChangeListener = null
@@ -192,7 +201,7 @@ class BatteryReceiver(private val service: ForegroundService) : BroadcastReceive
         private const val CHARGE_STOP = 1
         private const val CHARGE_REFRESH = 2
 
-        private val handler = Handler()
+        private val handler = Handler(Looper.getMainLooper())
         internal var backOffTime = CHARGING_CHANGE_TOLERANCE_MS
     }
 

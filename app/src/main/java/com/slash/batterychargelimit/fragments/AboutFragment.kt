@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.pm.PackageInfoCompat
 import androidx.fragment.app.Fragment
 import com.slash.batterychargelimit.Constants
 import com.slash.batterychargelimit.R
@@ -54,9 +55,9 @@ class AboutFragment : Fragment() {
     private fun displayVersion(view: View) {
         val versionTV = view.findViewById(R.id.app_version) as TextView
         try {
-            val packageInfo = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0)
+            val packageInfo = requireActivity().packageManager.getPackageInfo(requireActivity().packageName, 0)
             val version = packageInfo.versionName
-            val versionCode = packageInfo.versionCode
+            val versionCode = PackageInfoCompat.getLongVersionCode(packageInfo)
             versionTV.text = "$version ($versionCode)"
         } catch (e: Exception) {
             e.printStackTrace()

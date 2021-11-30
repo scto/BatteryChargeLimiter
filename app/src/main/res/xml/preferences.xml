@@ -4,10 +4,10 @@
     android:overScrollMode="never"
     android:fadingEdge="none"
     theme="@style/PreferenceScreenStyle"
-    style="@style/PreferenceScreenStyle"
-    >
+    style="@style/PreferenceScreenStyle">
 
-    <androidx.preference.PreferenceCategory android:title="@string/control_file_settings"
+    <androidx.preference.PreferenceCategory
+        android:title="@string/control_file_settings"
         app:iconSpaceReserved="false">
 
         <androidx.preference.SwitchPreference
@@ -16,14 +16,14 @@
             android:summaryOn="@string/control_file_option_summary_on"
             android:summaryOff="@string/control_file_option_summary_off"
             android:defaultValue="false"
-            app:iconSpaceReserved="false"/>
+            app:iconSpaceReserved="false" />
 
         <com.slash.batterychargelimit.settings.ControlFilePreference
             app:iconSpaceReserved="false"
             android:key="control_file"
             android:title="@string/set_control_file"
             android:dialogTitle="@string/select_control_file"
-            android:textColor="?attr/primaryText"/>
+            android:textColor="?attr/primaryText" />
 
         <androidx.preference.Preference
             app:iconSpaceReserved="false"
@@ -31,11 +31,12 @@
             android:title="@string/custom_ctrl_file_data_setup_title"
             android:enabled="false"
             android:defaultValue="false"
-            android:textColor="?attr/primaryText"/>
+            android:textColor="?attr/primaryText" />
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/main_settings"
+    <androidx.preference.PreferenceCategory
+        android:title="@string/main_settings"
         app:iconSpaceReserved="false">
 
         <androidx.preference.ListPreference
@@ -44,7 +45,7 @@
             android:title="Theme"
             android:entryValues="@array/themeKeys"
             android:entries="@array/themeValues"
-            android:summary="%1$s"/>
+            android:summary="%1$s" />
 
         <androidx.preference.CheckBoxPreference
             app:iconSpaceReserved="false"
@@ -73,15 +74,14 @@
             android:title="@string/show_temperature_in_notification"
             android:defaultValue="false"
             android:textColor="?attr/primaryText"
-            app:buttonTint="@color/checkbox_filter"/>
+            app:buttonTint="@color/checkbox_filter" />
 
         <androidx.preference.CheckBoxPreference
             app:iconSpaceReserved="false"
             android:key="hide_toast_on_service_changes"
             android:title="@string/hide_toast_on_service_change"
             android:defaultValue="false"
-            android:textColor="?attr/primaryText"
-            />
+            android:textColor="?attr/primaryText" />
 
         <androidx.preference.CheckBoxPreference
             app:iconSpaceReserved="false"
@@ -89,11 +89,12 @@
             android:title="@string/enforce_charge_limit"
             android:summary="@string/enforce_charge_limit_desc"
             android:defaultValue="true"
-            android:textColor="?attr/primaryText"/>
+            android:textColor="?attr/primaryText" />
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/advanced_settings"
+    <androidx.preference.PreferenceCategory
+        android:title="@string/advanced_settings"
         app:iconSpaceReserved="false">
 
         <androidx.preference.CheckBoxPreference
@@ -111,7 +112,7 @@
             android:title="@string/immediate_power_intent_handling"
             android:summary="@string/immediate_power_intent_handling_desc"
             android:defaultValue="false"
-            android:textColor="?attr/primaryText"/>
+            android:textColor="?attr/primaryText" />
 
         <androidx.preference.CheckBoxPreference
             android:key="always_write_cf"
@@ -119,7 +120,7 @@
             android:summary="@string/always_write_cf_desc"
             android:defaultValue="false"
             android:textColor="?attr/primaryText"
-            app:iconSpaceReserved="false"/>
+            app:iconSpaceReserved="false" />
 
     </androidx.preference.PreferenceCategory>
 

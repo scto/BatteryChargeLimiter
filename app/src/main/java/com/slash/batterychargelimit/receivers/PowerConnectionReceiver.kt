@@ -27,11 +27,13 @@ class PowerConnectionReceiver : BroadcastReceiver() {
 
         //Ignore new events after power change or during state fixing
         if (!Utils.getPrefs(context).getBoolean(PrefsFragment.KEY_IMMEDIATE_POWER_INTENT_HANDLING, false)
-                && Utils.isChangePending((BatteryReceiver.backOffTime * 2).coerceAtLeast(POWER_CHANGE_TOLERANCE_MS))) {
+            && Utils.isChangePending((BatteryReceiver.backOffTime * 2).coerceAtLeast(POWER_CHANGE_TOLERANCE_MS))
+        ) {
             if (action == Intent.ACTION_POWER_CONNECTED) {
                 //Ignore connected event only if service is running
                 if (ForegroundService.isRunning
-                        || Utils.getPrefs(context).getBoolean(PrefsFragment.KEY_DISABLE_AUTO_RECHARGE, false)) {
+                    || Utils.getPrefs(context).getBoolean(PrefsFragment.KEY_DISABLE_AUTO_RECHARGE, false)
+                ) {
                     Log.d("Power State", "ACTION_POWER_CONNECTED ignored")
                     return
                 }

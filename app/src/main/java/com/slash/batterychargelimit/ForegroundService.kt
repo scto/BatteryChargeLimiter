@@ -53,20 +53,21 @@ class ForegroundService : Service() {
         settings.edit().putBoolean(NOTIFICATION_LIVE, true).apply()
 
         val channel = NotificationChannelCompat.Builder(
-                Constants.FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID,
-                NotificationManagerCompat.IMPORTANCE_DEFAULT)
-                .setName("Charge Limit State")
-                .build()
+            Constants.FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID,
+            NotificationManagerCompat.IMPORTANCE_DEFAULT
+        )
+            .setName("Charge Limit State")
+            .build()
         NotificationManagerCompat.from(this).createNotificationChannel(channel)
 
         val notification = mNotifyBuilder
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setCategory(NotificationCompat.CATEGORY_SYSTEM)
-                .setContentTitle(getString(R.string.please_wait))
-                .setContentInfo(getString(R.string.please_wait))
-                .setSmallIcon(R.drawable.ic_notif_charge)
-                .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .build()
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setCategory(NotificationCompat.CATEGORY_SYSTEM)
+            .setContentTitle(getString(R.string.please_wait))
+            .setContentInfo(getString(R.string.please_wait))
+            .setSmallIcon(R.drawable.ic_notif_charge)
+            .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            .build()
         startForeground(notifyID, notification)
 
         batteryReceiver = BatteryReceiver(this@ForegroundService)
@@ -86,9 +87,14 @@ class ForegroundService : Service() {
         }
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntentApp = PendingIntent.getActivity(this, 0, notificationIntent, 0)
-        val pendingIntentDisable = PendingIntent.getBroadcast(this, 0, Intent().setAction(INTENT_DISABLE_ACTION), PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntentDisable = PendingIntent.getBroadcast(
+            this,
+            0,
+            Intent().setAction(INTENT_DISABLE_ACTION),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
         mNotifyBuilder.addAction(0, actionText, pendingIntentDisable)
-                .addAction(0, getString(R.string.open_app), pendingIntentApp)
+            .addAction(0, getString(R.string.open_app), pendingIntentApp)
     }
 
     fun setNotificationTitle(title: String) {

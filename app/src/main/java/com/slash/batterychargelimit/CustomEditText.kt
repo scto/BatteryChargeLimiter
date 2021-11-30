@@ -10,7 +10,11 @@ class CustomEditText : TextInputEditText {
 
     constructor(context: Context, attribute_set: AttributeSet) : super(context, attribute_set)
 
-    constructor(context: Context, attribute_set: AttributeSet, def_style_attribute: Int) : super(context, attribute_set, def_style_attribute)
+    constructor(context: Context, attribute_set: AttributeSet, def_style_attribute: Int) : super(
+        context,
+        attribute_set,
+        def_style_attribute
+    )
 
     override fun onKeyPreIme(key_code: Int, event: KeyEvent): Boolean {
         if (event.keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP)

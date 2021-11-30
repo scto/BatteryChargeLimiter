@@ -103,4 +103,8 @@
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="black">Black - AMOLED</string>
+    <string name="current_voltage_threshold">Current Voltage Threshold</string>
+    <string name="default_voltage_threshold">Default Voltage Threshold</string>
+    <string name="developers">Developers</string>
+    <string name="translators">Translators</string>
 </resources>

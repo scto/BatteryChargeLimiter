@@ -8,9 +8,10 @@ import android.content.SharedPreferences
 import android.os.BatteryManager
 import android.os.Bundle
 import android.os.Handler
-import android.preference.PreferenceManager
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.slash.batterychargelimit.Constants.CHARGE_LIMIT_ENABLED
@@ -106,11 +107,14 @@ object Utils {
     fun getCtrlFiles(context: Context): List<ControlFile> {
         if (ctrlFiles == null) {
             try {
-                val r = InputStreamReader(context.resources.openRawResource(R.raw.control_files),
-                        Charset.forName("UTF-8"))
+                val r = InputStreamReader(
+                    context.resources.openRawResource(R.raw.control_files),
+                    Charset.forName("UTF-8")
+                )
                 val type = object : TypeToken<List<ControlFile>>() {}.type
                 ctrlFiles = Gson().fromJson<List<ControlFile>>(r, type)!!.sortedWith(compareBy(
-                        { it.order }, { it.issues }, { it.experimental }, { it.file }))
+                    { it.order }, { it.issues }, { it.experimental }, { it.file })
+                )
             } catch (e: Exception) {
                 Log.wtf(context.javaClass.simpleName, e)
                 return emptyList()
@@ -129,18 +133,20 @@ object Utils {
         //This will immediately reset the current control file
         stopService(context)
         getPrefs(context)
-                .edit().putString(PrefsFragment.KEY_CONTROL_FILE, cf.file).apply()
+            .edit().putString(PrefsFragment.KEY_CONTROL_FILE, cf.file).apply()
         getSettings(context)
-                .edit().putString(FILE_KEY, cf.file)
-                .putString(CHARGE_ON_KEY, cf.chargeOn)
-                .putString(CHARGE_OFF_KEY, cf.chargeOff).apply()
+            .edit().putString(FILE_KEY, cf.file)
+            .putString(CHARGE_ON_KEY, cf.chargeOn)
+            .putString(CHARGE_OFF_KEY, cf.chargeOff).apply()
         //Respawn the service if necessary
         startServiceIfLimitEnabled(context)
     }
 
     fun isPhonePluggedIn(context: Context): Boolean {
-        val batteryIntent = context.applicationContext.registerReceiver(null,
-                IntentFilter(Intent.ACTION_BATTERY_CHANGED))!!
+        val batteryIntent = context.applicationContext.registerReceiver(
+            null,
+            IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        )!!
         return (batteryIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
                 == BatteryManager.BATTERY_STATUS_CHARGING
                 || batteryIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1) > 0)
@@ -160,12 +166,14 @@ object Utils {
     fun getBatteryInfo(context: Context, intent: Intent, useFahrenheit: Boolean): String {
         val batteryVoltage = intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1)
         val batteryTemperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1)
-        return context.getString(if (useFahrenheit) R.string.battery_info_F else R.string.battery_info_C,
-                batteryVoltage.toFloat() / 1000f,
-                if (useFahrenheit) 32f + batteryTemperature * 1.8f / 10f else batteryTemperature / 10f)
+        return context.getString(
+            if (useFahrenheit) R.string.battery_info_F else R.string.battery_info_C,
+            batteryVoltage.toFloat() / 1000f,
+            if (useFahrenheit) 32f + batteryTemperature * 1.8f / 10f else batteryTemperature / 10f
+        )
     }
 
-//    @SuppressLint("PrivateApi")
+    //    @SuppressLint("PrivateApi")
     fun resetBatteryStats(context: Context) {
 //        try {
 //            // new technique for PureNexus-powered devices
@@ -180,14 +188,14 @@ object Utils {
 //            Toast.makeText(context, R.string.stats_reset_success, Toast.LENGTH_SHORT).show()
 //        } catch (e: Exception) {
 //            Log.i("New reset method failed", e.message, e)
-            // on Exception, fall back to conventional method
-            suShell.addCommand("dumpsys batterystats --reset", 0) { _, exitCode, _ ->
-                if (exitCode == 0) {
-                    Toast.makeText(context, R.string.stats_reset_success, Toast.LENGTH_SHORT).show()
-                } else {
-                    Log.e(TAG, "Statistics reset failed")
-                }
+        // on Exception, fall back to conventional method
+        suShell.addCommand("dumpsys batterystats --reset", 0) { _, exitCode, _ ->
+            if (exitCode == 0) {
+                Toast.makeText(context, R.string.stats_reset_success, Toast.LENGTH_SHORT).show()
+            } else {
+                Log.e(TAG, "Statistics reset failed")
             }
+        }
 //        }
     }
 
@@ -216,8 +224,10 @@ object Utils {
                 val settings = getSettings(context)
                 // set the new limit
                 setLimit(limit, settings)
-                Toast.makeText(context, context.getString(R.string.intent_limit_accepted, limit),
-                        Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context, context.getString(R.string.intent_limit_accepted, limit),
+                    Toast.LENGTH_SHORT
+                ).show()
                 if (!settings.getBoolean(NOTIFICATION_LIVE, false)) {
                     settings.edit().putBoolean(CHARGE_LIMIT_ENABLED, true).apply()
                     startServiceIfLimitEnabled(context)
@@ -236,7 +246,7 @@ object Utils {
             if (getPrefs(context).getBoolean(PrefsFragment.KEY_DISABLE_AUTO_RECHARGE, false)) {
                 changeState(context, CHARGE_ON)
             }
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 if (isPhonePluggedIn(context)) {
                     context.startService(Intent(context, ForegroundService::class.java))
                     // display service enabled Toast message if not disabled in settings
@@ -262,7 +272,7 @@ object Utils {
             ForegroundService.ignoreAutoReset()
         }
         context.stopService(Intent(context, ForegroundService::class.java))
-        if(!getPrefs(context).getBoolean(PrefsFragment.KEY_DISABLE_AUTO_RECHARGE, false)) {
+        if (!getPrefs(context).getBoolean(PrefsFragment.KEY_DISABLE_AUTO_RECHARGE, false)) {
             changeState(context, CHARGE_ON)
         }
         // display service disabled Toast message if not disabled in settings
@@ -271,7 +281,7 @@ object Utils {
         }
     }
 
-    fun getCtrlFileData (context: Context): String? {
+    fun getCtrlFileData(context: Context): String? {
         val settings = getSettings(context)
         val preferences = getPrefs(context)
 
@@ -284,7 +294,7 @@ object Utils {
         }
     }
 
-    fun getCtrlEnabledData(context: Context) : String {
+    fun getCtrlEnabledData(context: Context): String {
         val settings = getSettings(context)
         val preferences = getPrefs(context)
 
@@ -297,7 +307,7 @@ object Utils {
         }
     }
 
-    fun getCtrlDisabledData(context: Context) : String {
+    fun getCtrlDisabledData(context: Context): String {
         val settings = getSettings(context)
         val preferences = getPrefs(context)
 
@@ -315,9 +325,15 @@ object Utils {
         val getTheme = preferences.getString(PrefsFragment.KEY_THEME, Constants.LIGHT)
         var theme = R.style.AppThemeLight_NoActionBar
         when (getTheme) {
-            Constants.LIGHT -> { theme = R.style.AppThemeLight_NoActionBar }
-            Constants.DARK -> { theme = R.style.AppThemeDark_NoActionBar }
-            Constants.BLACK -> { theme = R.style.AppThemeBlack_NoActionBar }
+            Constants.LIGHT -> {
+                theme = R.style.AppThemeLight_NoActionBar
+            }
+            Constants.DARK -> {
+                theme = R.style.AppThemeDark_NoActionBar
+            }
+            Constants.BLACK -> {
+                theme = R.style.AppThemeBlack_NoActionBar
+            }
         }
         activity.setTheme(theme)
     }
@@ -349,8 +365,10 @@ object Utils {
             switchCommands = arrayOf("echo $voltageThreshold > $voltageFile")
         } else {
             vfInitialized = true
-            switchCommands = arrayOf("mount -o rw,remount $voltageFile", "chmod u+w $voltageFile",
-                    "echo $voltageThreshold > $voltageFile")
+            switchCommands = arrayOf(
+                "mount -o rw,remount $voltageFile", "chmod u+w $voltageFile",
+                "echo $voltageThreshold > $voltageFile"
+            )
         }
         executor.submit {
             suShell.addCommand(switchCommands)
@@ -358,24 +376,22 @@ object Utils {
         getCurrentVoltageThresholdAsync(context, handler)
     }
 
-    fun getCurrentVoltageThresholdAsync(context: Context, handler: Handler?){
+    fun getCurrentVoltageThresholdAsync(context: Context, handler: Handler?) {
         executor.submit {
             val voltageFile = getVoltageFile()
             suShell.addCommand("cat $voltageFile", 0) { _, _, output ->
-                if (output.size != 0 ) {
-                    val voltage = output[0]
-                    val sharedPrefs = getSettings(context)
-                    if (sharedPrefs.getString(Constants.DEFAULT_VOLTAGE_LIMIT, null) == null) {
-                        sharedPrefs.edit().putString(Constants.DEFAULT_VOLTAGE_LIMIT, voltage).apply()
-                    }
-                    if (handler != null) {
-                        val msg = handler.obtainMessage(MainActivity.MSG_UPDATE_VOLTAGE_THRESHOLD)
-                        val bundle = Bundle()
-                        bundle.putString(MainActivity.VOLTAGE_THRESHOLD, voltage)
-                        msg.data = bundle
-                        handler.sendMessage(msg)
-                    }
+                if (output.size == 0) return@addCommand
+                val voltage = output[0]
+                val sharedPrefs = getSettings(context)
+                if (sharedPrefs.getString(Constants.DEFAULT_VOLTAGE_LIMIT, null) == null) {
+                    sharedPrefs.edit().putString(Constants.DEFAULT_VOLTAGE_LIMIT, voltage).apply()
                 }
+                if (handler == null) return@addCommand
+                val msg = handler.obtainMessage(MainActivity.MSG_UPDATE_VOLTAGE_THRESHOLD)
+                val bundle = Bundle()
+                bundle.putString(MainActivity.VOLTAGE_THRESHOLD, voltage)
+                msg.data = bundle
+                handler.sendMessage(msg)
             }
         }
     }

@@ -57,15 +57,15 @@ object Constants {
     const val SOURCE_CODE = "https://github.com/sriharshaarangi/BatteryChargeLimit"
     val DEVELOPERS = arrayOf("Sri Harsha Arangi", "Michael Lux", "Mike xdnax")
     val TRANSLATORS = arrayOf(
-            "Brazilian Portuguese: Caio Roberto",
-            "Bengali: AdroitAdorKhan",
-            "Spanish: Jose",
-            "Russian: Ричард Иванов",
-            "Italian: BombeerHC",
-            "Romanian: Y0lin",
-            "Dutch: hypothermic",
-            "Turkish: FatihFIRINCI",
-            "Arabic: Bilux"
+        "Brazilian Portuguese: Caio Roberto",
+        "Bengali: AdroitAdorKhan",
+        "Spanish: Jose",
+        "Russian: Ричард Иванов",
+        "Italian: BombeerHC",
+        "Romanian: Y0lin",
+        "Dutch: hypothermic",
+        "Turkish: FatihFIRINCI",
+        "Arabic: Bilux"
     )
 
     const val SAVED_PATH_DATA = "saved_ctrl_path_data"

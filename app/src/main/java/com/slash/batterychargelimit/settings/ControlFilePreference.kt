@@ -18,7 +18,7 @@ class ControlFilePreference(context: Context, attrs: AttributeSet?) : DialogPref
         controlFile = getPersistedString(null)
     }
 
-    fun getCurrentControlFile() : String {
+    fun getCurrentControlFile(): String {
         return controlFile
     }
 }

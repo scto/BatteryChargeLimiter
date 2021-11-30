@@ -25,8 +25,10 @@ class EnableWidget : AppWidgetProvider() {
     companion object {
 
         fun buildButtonPendingIntent(context: Context): PendingIntent {
-            return PendingIntent.getBroadcast(context, 0,
-                    Intent().setAction(INTENT_TOGGLE_ACTION), PendingIntent.FLAG_UPDATE_CURRENT)
+            return PendingIntent.getBroadcast(
+                context, 0,
+                Intent().setAction(INTENT_TOGGLE_ACTION), PendingIntent.FLAG_UPDATE_CURRENT
+            )
         }
 
         fun pushWidgetUpdate(context: Context, remoteViews: RemoteViews) {

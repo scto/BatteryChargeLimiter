@@ -20,7 +20,7 @@ class ControlFileDialogFragmentCompat : PreferenceDialogFragmentCompat() {
 
     override fun onCreateDialogView(context: Context?): View {
         super.onCreateDialogView(context)
-        ctrlFiles = Utils.getCtrlFiles(context!!)
+        ctrlFiles = Utils.getCtrlFiles(requireContext())
         return ListView(context)
     }
 
@@ -28,20 +28,20 @@ class ControlFileDialogFragmentCompat : PreferenceDialogFragmentCompat() {
         super.onBindDialogView(view)
         val v = view as ListView
         default = (preference as ControlFilePreference).getCurrentControlFile()
-        v.adapter = ControlFileAdapter(ctrlFiles.filter { it.isValid }, context!!)
+        v.adapter = ControlFileAdapter(ctrlFiles.filter { it.isValid }, requireContext())
     }
 
     override fun onDialogClosed(positiveResult: Boolean) {}
 
 
-    inner class ControlFileAdapter internal constructor(private val data: List<ControlFile>, pContext: Context)
-        : ArrayAdapter<ControlFile>(pContext, R.layout.cf_row, data) {
+    inner class ControlFileAdapter internal constructor(private val data: List<ControlFile>, pContext: Context) :
+        ArrayAdapter<ControlFile>(pContext, R.layout.cf_row, data) {
 
         private inner class ViewHolder {
-            internal var label: RadioButton? = null
-            internal var details: TextView? = null
-            internal var experimental: TextView? = null
-            internal var issues: TextView? = null
+            var label: RadioButton? = null
+            var details: TextView? = null
+            var experimental: TextView? = null
+            var issues: TextView? = null
         }
 
         override fun getView(position: Int, pConvertView: View?, parent: ViewGroup): View {
@@ -83,7 +83,7 @@ class ControlFileDialogFragmentCompat : PreferenceDialogFragmentCompat() {
 
 
     companion object {
-        fun newInstance(key: String) : ControlFileDialogFragmentCompat{
+        fun newInstance(key: String): ControlFileDialogFragmentCompat {
             val instance = ControlFileDialogFragmentCompat()
             val b = Bundle(1)
             b.putString(ARG_KEY, key)

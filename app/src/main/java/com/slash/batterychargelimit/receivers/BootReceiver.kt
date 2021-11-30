@@ -18,7 +18,7 @@ class BootReceiver : BroadcastReceiver() {
             Utils.setVoltageThreshold(null, true, context, null)
             Utils.startServiceIfLimitEnabled(context)
             Utils.suShell.addCommand("cat ${Utils.getVoltageFile()}", 0) { _, _, output ->
-                if (output.size != 0 ) {
+                if (output.size != 0) {
                     Utils.getSettings(context).edit().putString(Constants.DEFAULT_VOLTAGE_LIMIT, output[0]).apply()
                 }
             }

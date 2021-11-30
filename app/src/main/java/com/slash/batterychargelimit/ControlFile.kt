@@ -13,15 +13,24 @@ class ControlFile {
 
     @Keep
     val file: String? = null
-    @Keep val label: String? = null
-    @Keep val details: String? = null
-    @Keep val chargeOn: String? = null
-    @Keep val chargeOff: String? = null
-    @Keep val experimental: Boolean? = false
-    @Keep val order: Int? = 0
-    @Keep val issues: Boolean? = false
-    @Transient private var checked = false
-    @Transient private var valid = false
+    @Keep
+    val label: String? = null
+    @Keep
+    val details: String? = null
+    @Keep
+    val chargeOn: String? = null
+    @Keep
+    val chargeOff: String? = null
+    @Keep
+    val experimental: Boolean? = false
+    @Keep
+    val order: Int? = 0
+    @Keep
+    val issues: Boolean? = false
+    @Transient
+    private var checked = false
+    @Transient
+    private var valid = false
 
     val isValid: Boolean
         get() {

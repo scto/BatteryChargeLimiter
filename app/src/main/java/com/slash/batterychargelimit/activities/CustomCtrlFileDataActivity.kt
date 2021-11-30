@@ -35,7 +35,8 @@ class CustomCtrlFileDataActivity : AppCompatActivity() {
         val savedDisabledData = settings.getString(Constants.SAVED_DISABLED_DATA, DEFAULT_DISABLED)
         val updatedDataText = findViewById<TextView>(R.id.custom_data_updated)
 
-        updatedDataText.hint = "Path Data: $savedPathData\nEnable Value: $savedEnabledData\nDisabled Value: $savedDisabledData"
+        updatedDataText.hint =
+            "Path Data: $savedPathData\nEnable Value: $savedEnabledData\nDisabled Value: $savedDisabledData"
 
 
         editPathData.addTextChangedListener(object : TextWatcher {
@@ -85,7 +86,8 @@ class CustomCtrlFileDataActivity : AppCompatActivity() {
             settings.edit().putString(Constants.SAVED_PATH_DATA, customPathData).apply()
             settings.edit().putString(Constants.SAVED_ENABLED_DATA, customEnabledData).apply()
             settings.edit().putString(Constants.SAVED_DISABLED_DATA, customDisabledData).apply()
-            updatedDataText.hint = "Path Data: $customPathData\nEnable Value: $customEnabledData\nDisabled Value: $customDisabledData"
+            updatedDataText.hint =
+                "Path Data: $customPathData\nEnable Value: $customEnabledData\nDisabled Value: $customDisabledData"
             Utils.startServiceIfLimitEnabled(this)
         }
     }
