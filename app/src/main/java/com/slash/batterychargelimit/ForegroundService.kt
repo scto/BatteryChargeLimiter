@@ -6,7 +6,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.media.RingtoneManager
 import android.os.IBinder
+import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.slash.batterychargelimit.Constants.INTENT_DISABLE_ACTION
 import com.slash.batterychargelimit.Constants.NOTIFICATION_LIVE
@@ -28,9 +30,11 @@ import com.slash.batterychargelimit.settings.PrefsFragment
  */
 class ForegroundService : Service() {
 
-    private val settings by lazy(LazyThreadSafetyMode.NONE) {this.getSharedPreferences(SETTINGS, 0)}
-    private val prefs by lazy(LazyThreadSafetyMode.NONE) {Utils.getPrefs(this)}
-    private val mNotifyBuilder by lazy(LazyThreadSafetyMode.NONE) { NotificationCompat.Builder(this, "Charge Limit State") }
+    private val settings by lazy(LazyThreadSafetyMode.NONE) { this.getSharedPreferences(SETTINGS, 0) }
+    private val prefs by lazy(LazyThreadSafetyMode.NONE) { Utils.getPrefs(this) }
+    private val mNotifyBuilder by lazy(LazyThreadSafetyMode.NONE) {
+        NotificationCompat.Builder(this, Constants.FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID)
+    }
     private var notifyID = 1
     private var autoResetActive = false
     private var batteryReceiver: BatteryReceiver? = null
@@ -48,10 +52,16 @@ class ForegroundService : Service() {
         notifyID = 1
         settings.edit().putBoolean(NOTIFICATION_LIVE, true).apply()
 
+        val channel = NotificationChannelCompat.Builder(
+                Constants.FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID,
+                NotificationManagerCompat.IMPORTANCE_DEFAULT)
+                .setName("Charge Limit State")
+                .build()
+        NotificationManagerCompat.from(this).createNotificationChannel(channel)
+
         val notification = mNotifyBuilder
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SYSTEM)
-                .setOngoing(true)
                 .setContentTitle(getString(R.string.please_wait))
                 .setContentInfo(getString(R.string.please_wait))
                 .setSmallIcon(R.drawable.ic_notif_charge)

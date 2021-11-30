@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.slash.batterychargelimit.Constants
 import com.slash.batterychargelimit.Constants.AUTO_RESET_STATS
 import com.slash.batterychargelimit.Constants.CHARGE_LIMIT_ENABLED
@@ -47,9 +48,9 @@ class MainActivity : AppCompatActivity() {
     private val settings by lazy(LazyThreadSafetyMode.NONE) {getSharedPreferences(SETTINGS, 0)}
     private val statusText by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.status) }
     private val batteryInfo by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.battery_info) }
-    private val enableSwitch by lazy(LazyThreadSafetyMode.NONE) { findViewById<Switch>(R.id.enable_switch) }
-    private val disableChargeSwitch by lazy(LazyThreadSafetyMode.NONE) { findViewById<Switch>(R.id.disable_charge_switch) }
-    private val limitByVoltageSwitch by lazy(LazyThreadSafetyMode.NONE) { findViewById<Switch>(R.id.limit_by_voltage) }
+    private val enableSwitch by lazy(LazyThreadSafetyMode.NONE) { findViewById<SwitchMaterial>(R.id.enable_switch) }
+    private val disableChargeSwitch by lazy(LazyThreadSafetyMode.NONE) { findViewById<SwitchMaterial>(R.id.disable_charge_switch) }
+    private val limitByVoltageSwitch by lazy(LazyThreadSafetyMode.NONE) { findViewById<SwitchMaterial>(R.id.limit_by_voltage) }
     private val customThresholdEditView by lazy(LazyThreadSafetyMode.NONE) { findViewById<EditText>(R.id.voltage_threshold) }
     private val currentThresholdTextView by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.current_voltage_threshold) }
     private val defaultThresholdTextView by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.default_voltage_threshold) }
@@ -103,7 +104,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showNoRootDialog() {
-        Toast.makeText(this, R.string.root_denied, Toast.LENGTH_SHORT)
         AlertDialog.Builder(this@MainActivity)
                 .setMessage(R.string.root_denied)
                 .setCancelable(false)
@@ -274,19 +274,18 @@ class MainActivity : AppCompatActivity() {
 
     //OnCheckedChangeListener for Switch elements
     private val switchListener = object : CompoundButton.OnCheckedChangeListener {
-        val context: Context = this@MainActivity
         override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
             when(buttonView.id) {
                 R.id.enable_switch -> {
                     settings.edit().putBoolean(CHARGE_LIMIT_ENABLED, isChecked).apply()
                     if (isChecked) {
-                        Utils.startServiceIfLimitEnabled(context)
+                        Utils.startServiceIfLimitEnabled(this@MainActivity)
                         disableSwitches(listOf(disableChargeSwitch, limitByVoltageSwitch))
                     } else {
-                        Utils.stopService(context)
+                        Utils.stopService(this@MainActivity)
                         enableSwitches(listOf(disableChargeSwitch, limitByVoltageSwitch))
                     }
-                    EnableWidgetIntentReceiver.updateWidget(context, isChecked)
+                    EnableWidgetIntentReceiver.updateWidget(this@MainActivity, isChecked)
                 }
                 R.id.disable_charge_switch -> {
                     if (isChecked) {
@@ -316,14 +315,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun disableSwitches(switches: List<Switch>) {
+    fun disableSwitches(switches: List<SwitchMaterial>) {
         for (switch in switches) {
             switch.isEnabled = false
             switch.setTextColor(getColorFromAttr(R.attr.secondaryText, this))
         }
     }
 
-    fun enableSwitches(switches: List<Switch>) {
+    fun enableSwitches(switches: List<SwitchMaterial>) {
         for (switch in switches) {
             switch.isEnabled = true
             switch.setTextColor(getColorFromAttr(R.attr.primaryText, this))
