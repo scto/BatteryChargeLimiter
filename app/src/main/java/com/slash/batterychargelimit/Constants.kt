@@ -49,8 +49,9 @@ object Constants {
     const val NOTIF_MAINTAIN = "ic_maintain"
     const val NOTIF_CHARGE = "ic_charge"
 
-    const val INTENT_TOGGLE_ACTION = BuildConfig.APPLICATION_ID + ".TOGGLE"
-    const val INTENT_DISABLE_ACTION = BuildConfig.APPLICATION_ID + ".DISABLE"
+    const val INTENT_TOGGLE_ACTION = BuildConfig.APPLICATION_ID + ".action.TOGGLE"
+    const val INTENT_DISABLE_ACTION = BuildConfig.APPLICATION_ID + ".action.DISABLE"
+    const val INTENT_CHANGE_LIMIT_ACTION = BuildConfig.APPLICATION_ID + ".action.CHANGE_LIMIT"
     const val FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".action.FOREGROUND_SERVICE"
 
     const val XDA_THREAD = "https://forum.xda-developers.com/android/apps-games/root-battery-charge-limit-t3557002/"

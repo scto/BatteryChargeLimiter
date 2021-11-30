@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.slash.batterychargelimit">
 
+    <permission
+        android:name="${applicationId}.permission.CONTROL_BATTERY_CHARGE"
+        android:protectionLevel="dangerous"
+        android:label="@string/control_battery_charge_permission_label"
+        android:description="@string/control_battery_charge_permission_description" />
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!--<uses-permission android:name="android.permission.BATTERY_STATS"/>-->
     <uses-permission android:name="android.permission.RESET_BATTERY_STATS" />
@@ -26,7 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LimitChangeActivity"
             android:label="@string/intent_handle_activity">
@@ -36,7 +41,6 @@
                 <data android:mimeType="@string/mime_battery_limit" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.CustomCtrlFileDataActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
@@ -47,41 +51,30 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".receivers.PowerConnectionReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
-
         <receiver
-            android:name=".LimitChangeReceiver"
-            android:label="@string/receiver_limit">
+            android:name=".receivers.ControlBatteryChargeReceiver"
+            android:permission="${applicationId}.permission.CONTROL_BATTERY_CHARGE">
             <intent-filter>
-                <action android:name="com.slash.batterychargelimit.CHANGE_LIMIT" />
+                <action android:name="${applicationId}.action.CHANGE_LIMIT" />
+                <action android:name="${applicationId}.action.TOGGLE" />
+                <action android:name="${applicationId}.action.DISABLE" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".receivers.EnableWidgetIntentReceiver">
-            <intent-filter>
-                <action android:name="${applicationId}.TOGGLE" />
-            </intent-filter>
-        </receiver>
-
         <receiver android:name=".EnableWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="${applicationId}.action.TOGGLE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/enable_widget" />
-        </receiver>
-
-        <receiver android:name=".receivers.ServiceReceiver">
-            <intent-filter>
-                <action android:name="${applicationId}.DISABLE" />
-            </intent-filter>
         </receiver>
 
         <service

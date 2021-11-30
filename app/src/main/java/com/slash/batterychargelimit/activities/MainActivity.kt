@@ -17,7 +17,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.content.pm.PackageInfoCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.slash.batterychargelimit.Constants
+import com.slash.batterychargelimit.*
 import com.slash.batterychargelimit.Constants.AUTO_RESET_STATS
 import com.slash.batterychargelimit.Constants.CHARGE_LIMIT_ENABLED
 import com.slash.batterychargelimit.Constants.DISABLE_CHARGE_NOW
@@ -27,11 +27,7 @@ import com.slash.batterychargelimit.Constants.MIN
 import com.slash.batterychargelimit.Constants.NOTIFICATION_SOUND
 import com.slash.batterychargelimit.Constants.SETTINGS
 import com.slash.batterychargelimit.Constants.SETTINGS_VERSION
-import com.slash.batterychargelimit.ForegroundService
-import com.slash.batterychargelimit.R
-import com.slash.batterychargelimit.Utils
 import com.slash.batterychargelimit.fragments.AboutFragment
-import com.slash.batterychargelimit.receivers.EnableWidgetIntentReceiver
 import com.slash.batterychargelimit.settings.CtrlFileHelper
 import com.slash.batterychargelimit.settings.PrefsFragment
 import eu.chainfire.libsuperuser.Shell
@@ -288,7 +284,7 @@ class MainActivity : AppCompatActivity() {
                         Utils.stopService(this@MainActivity)
                         enableSwitches(listOf(disableChargeSwitch, limitByVoltageSwitch))
                     }
-                    EnableWidgetIntentReceiver.updateWidget(this@MainActivity, isChecked)
+                    EnableWidget.updateWidget(this@MainActivity, isChecked)
                 }
                 R.id.disable_charge_switch -> {
                     if (isChecked) {
@@ -332,7 +328,7 @@ class MainActivity : AppCompatActivity() {
     fun enableSwitches(switches: List<SwitchMaterial>) {
         for (switch in switches) {
             switch.isEnabled = true
-            switch.setTextColor(getColorFromAttr(android.R.attr.textColorPrimary, this))
+            switch.setTextColor(getColorFromAttr(R.attr.primaryText, this))
         }
     }
 

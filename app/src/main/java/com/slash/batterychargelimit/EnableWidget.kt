@@ -7,27 +7,65 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
+import android.widget.Toast
 import com.slash.batterychargelimit.Constants.CHARGE_LIMIT_ENABLED
 import com.slash.batterychargelimit.Constants.INTENT_TOGGLE_ACTION
-import com.slash.batterychargelimit.receivers.EnableWidgetIntentReceiver
+import eu.chainfire.libsuperuser.Shell
 
 class EnableWidget : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         val remoteViews = RemoteViews(context.packageName, R.layout.widget_button)
         val settings = Utils.getSettings(context)
         val isEnabled = settings.getBoolean(CHARGE_LIMIT_ENABLED, false)
-        remoteViews.setImageViewResource(R.id.enable, EnableWidgetIntentReceiver.getImage(isEnabled))
+        remoteViews.setImageViewResource(R.id.enable, getImage(isEnabled))
         remoteViews.setOnClickPendingIntent(R.id.enable, buildButtonPendingIntent(context))
 
         pushWidgetUpdate(context, remoteViews)
     }
 
+    override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == INTENT_TOGGLE_ACTION) {
+            val settings = Utils.getSettings(context)
+            if (Shell.SU.available()) {
+                val enable = !settings.getBoolean(CHARGE_LIMIT_ENABLED, false)
+                settings.edit().putBoolean(CHARGE_LIMIT_ENABLED, enable).apply()
+                if (enable) {
+                    Utils.startServiceIfLimitEnabled(context)
+                } else {
+                    Utils.stopService(context)
+                }
+                updateWidget(context, enable)
+            } else {
+                Toast.makeText(context, R.string.root_denied, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     companion object {
+
+        fun updateWidget(context: Context, enable: Boolean) {
+            val remoteViews = RemoteViews(context.packageName, R.layout.widget_button)
+
+            remoteViews.setImageViewResource(R.id.enable, getImage(enable))
+            remoteViews.setOnClickPendingIntent(R.id.enable, buildButtonPendingIntent(context))
+
+            pushWidgetUpdate(context, remoteViews)
+        }
+
+        fun getImage(enabled: Boolean): Int {
+            return if (enabled) {
+                R.drawable.widget_enabled
+            } else {
+                R.drawable.widget_disabled
+            }
+        }
 
         fun buildButtonPendingIntent(context: Context): PendingIntent {
             return PendingIntent.getBroadcast(
-                context, 0,
-                Intent().setAction(INTENT_TOGGLE_ACTION), PendingIntent.FLAG_UPDATE_CURRENT
+                context,
+                0,
+                Intent(context, EnableWidget::class.java).setAction(INTENT_TOGGLE_ACTION),
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
         }
 
