@@ -17,6 +17,7 @@ import com.slash.batterychargelimit.Constants.NOTIF_MAINTAIN
 import com.slash.batterychargelimit.Constants.SETTINGS
 import com.slash.batterychargelimit.activities.MainActivity
 import com.slash.batterychargelimit.receivers.BatteryReceiver
+import com.slash.batterychargelimit.receivers.ControlBatteryChargeReceiver
 import com.slash.batterychargelimit.settings.PrefsFragment
 
 
@@ -32,6 +33,10 @@ class ForegroundService : Service() {
 
     private val settings by lazy(LazyThreadSafetyMode.NONE) { this.getSharedPreferences(SETTINGS, 0) }
     private val prefs by lazy(LazyThreadSafetyMode.NONE) { Utils.getPrefs(this) }
+    private val notificationManager by lazy(LazyThreadSafetyMode.NONE) {
+        NotificationManagerCompat.from(this)
+
+    }
     private val mNotifyBuilder by lazy(LazyThreadSafetyMode.NONE) {
         NotificationCompat.Builder(this, Constants.FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID)
     }
@@ -49,19 +54,18 @@ class ForegroundService : Service() {
     override fun onCreate() {
         isRunning = true
 
-        notifyID = 1
         settings.edit().putBoolean(NOTIFICATION_LIVE, true).apply()
 
         val channel = NotificationChannelCompat.Builder(
             Constants.FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID,
-            NotificationManagerCompat.IMPORTANCE_DEFAULT
+            NotificationManagerCompat.IMPORTANCE_LOW
         )
-            .setName("Charge Limit State")
+            .setName("Charge Limit Status")
             .build()
-        NotificationManagerCompat.from(this).createNotificationChannel(channel)
+        notificationManager.createNotificationChannel(channel)
 
         val notification = mNotifyBuilder
-            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_SYSTEM)
             .setContentTitle(getString(R.string.please_wait))
             .setContentInfo(getString(R.string.please_wait))
@@ -80,21 +84,16 @@ class ForegroundService : Service() {
     }
 
     fun setNotificationActionText(actionText: String) {
-        // Clear old actions via reflection
-        mNotifyBuilder.javaClass.getDeclaredField("mActions").let {
-            it.isAccessible = true
-            it.set(mNotifyBuilder, ArrayList<NotificationCompat.Action>())
-        }
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntentApp = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        mNotifyBuilder.clearActions()
+        val pendingIntentOpenApp = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), 0)
         val pendingIntentDisable = PendingIntent.getBroadcast(
             this,
             0,
-            Intent().setAction(INTENT_DISABLE_ACTION),
+            Intent(this, ControlBatteryChargeReceiver::class.java).setAction(INTENT_DISABLE_ACTION),
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         mNotifyBuilder.addAction(0, actionText, pendingIntentDisable)
-            .addAction(0, getString(R.string.open_app), pendingIntentApp)
+            .addAction(0, getString(R.string.open_app), pendingIntentOpenApp)
     }
 
     fun setNotificationTitle(title: String) {
@@ -114,7 +113,7 @@ class ForegroundService : Service() {
     }
 
     fun updateNotification() {
-        startForeground(notifyID, mNotifyBuilder.build())
+        notificationManager.notify(notifyID, mNotifyBuilder.build())
     }
 
     fun setNotificationSound() {
