@@ -18,7 +18,7 @@
     "label": "smartchg_stop_charging",
     "details": "ASUS ROG Phone 2 [msmnile]",
     "chargeOn": "0",
-    "chargeOff": "1",
+    "chargeOff": "1"
   },
   {
     "file": "/proc/smb1357_disable_chrg",
