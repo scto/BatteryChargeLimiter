@@ -1,4 +1,4 @@
-package com.slash.batterychargelimit
+package io.github.muntashirakon.bcl
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -8,8 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import android.widget.Toast
-import com.slash.batterychargelimit.Constants.CHARGE_LIMIT_ENABLED
-import com.slash.batterychargelimit.Constants.INTENT_TOGGLE_ACTION
+import io.github.muntashirakon.bcl.Constants.CHARGE_LIMIT_ENABLED
+import io.github.muntashirakon.bcl.Constants.INTENT_TOGGLE_ACTION
 import eu.chainfire.libsuperuser.Shell
 
 class EnableWidget : AppWidgetProvider() {

@@ -1,4 +1,4 @@
-package com.slash.batterychargelimit.activities
+package io.github.muntashirakon.bcl.activities
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,12 +7,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.slash.batterychargelimit.Constants
-import com.slash.batterychargelimit.Constants.DEFAULT_DISABLED
-import com.slash.batterychargelimit.Constants.DEFAULT_ENABLED
-import com.slash.batterychargelimit.Constants.DEFAULT_FILE
-import com.slash.batterychargelimit.R
-import com.slash.batterychargelimit.Utils
+import io.github.muntashirakon.bcl.Constants
+import io.github.muntashirakon.bcl.Constants.DEFAULT_DISABLED
+import io.github.muntashirakon.bcl.Constants.DEFAULT_ENABLED
+import io.github.muntashirakon.bcl.Constants.DEFAULT_FILE
+import io.github.muntashirakon.bcl.R
+import io.github.muntashirakon.bcl.Utils
 
 class CustomCtrlFileDataActivity : AppCompatActivity() {
 

@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-package com.slash.batterychargelimit.receivers
+package io.github.muntashirakon.bcl.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.slash.batterychargelimit.Constants
-import com.slash.batterychargelimit.R
-import com.slash.batterychargelimit.Utils
+import io.github.muntashirakon.bcl.Constants
+import io.github.muntashirakon.bcl.R
+import io.github.muntashirakon.bcl.Utils
 import eu.chainfire.libsuperuser.Shell
 
 class ControlBatteryChargeReceiver : BroadcastReceiver() {

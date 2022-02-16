@@ -1,4 +1,4 @@
-package com.slash.batterychargelimit
+package io.github.muntashirakon.bcl
 
 /**
  * Created by Michael on 26.03.2017.

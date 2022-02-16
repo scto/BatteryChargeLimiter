@@ -1,4 +1,4 @@
-package com.slash.batterychargelimit
+package io.github.muntashirakon.bcl
 
 import androidx.annotation.Keep
 

@@ -1,4 +1,4 @@
-package com.slash.batterychargelimit.settings
+package io.github.muntashirakon.bcl.settings
 
 import android.content.Context
 import android.util.AttributeSet

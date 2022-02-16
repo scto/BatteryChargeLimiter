@@ -17,7 +17,7 @@
 #}
 
 # This is not required because of the "Keep" annotation, keep for completeness
--keepclassmembers class com.slash.batterychargelimit.ControlFile {
+-keepclassmembers class io.github.muntashirakon.bcl.ControlFile {
    private *;
 }
 # This is safe for Android >= 2.0

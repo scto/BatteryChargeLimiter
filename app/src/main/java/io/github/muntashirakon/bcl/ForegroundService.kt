@@ -1,4 +1,4 @@
-package com.slash.batterychargelimit
+package io.github.muntashirakon.bcl
 
 import android.app.PendingIntent
 import android.app.Service
@@ -10,15 +10,15 @@ import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.slash.batterychargelimit.Constants.INTENT_DISABLE_ACTION
-import com.slash.batterychargelimit.Constants.NOTIFICATION_LIVE
-import com.slash.batterychargelimit.Constants.NOTIF_CHARGE
-import com.slash.batterychargelimit.Constants.NOTIF_MAINTAIN
-import com.slash.batterychargelimit.Constants.SETTINGS
-import com.slash.batterychargelimit.activities.MainActivity
-import com.slash.batterychargelimit.receivers.BatteryReceiver
-import com.slash.batterychargelimit.receivers.ControlBatteryChargeReceiver
-import com.slash.batterychargelimit.settings.PrefsFragment
+import io.github.muntashirakon.bcl.Constants.INTENT_DISABLE_ACTION
+import io.github.muntashirakon.bcl.Constants.NOTIFICATION_LIVE
+import io.github.muntashirakon.bcl.Constants.NOTIF_CHARGE
+import io.github.muntashirakon.bcl.Constants.NOTIF_MAINTAIN
+import io.github.muntashirakon.bcl.Constants.SETTINGS
+import io.github.muntashirakon.bcl.activities.MainActivity
+import io.github.muntashirakon.bcl.receivers.BatteryReceiver
+import io.github.muntashirakon.bcl.receivers.ControlBatteryChargeReceiver
+import io.github.muntashirakon.bcl.settings.PrefsFragment
 
 
 /**

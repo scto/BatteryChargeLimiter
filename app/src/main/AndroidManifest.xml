@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.slash.batterychargelimit">
+    package="io.github.muntashirakon.bcl">
 
     <permission
         android:name="${applicationId}.permission.CONTROL_BATTERY_CHARGE"
