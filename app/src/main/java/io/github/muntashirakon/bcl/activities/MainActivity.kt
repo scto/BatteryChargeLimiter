@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+        setTitle(R.string.app_name)
 
         // Exit immediately if no root support
         if (!Shell.getShell().isRoot) {
