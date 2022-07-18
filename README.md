@@ -1,15 +1,28 @@
-# BatteryChargeLimit
-Source code of the android app that stops charging at a desired level.
+# Battery Charge Limiter (BCL)
 
-For more info: https://forum.xda-developers.com/android/apps-games/root-battery-charge-limit-t3557002
+A fork of **Battery Charge Limit** whose development has been stalled for some time.
 
-[<img src="https://f-droid.org/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/com.slash.batterychargelimit/)
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
-     alt="Get it on Google Play"
-     height="80">](https://play.google.com/store/apps/details?id=com.slash.batterychargelimit)
+_This app is a work in progress. If a feature is not working, do not hesitate to file a report._
 
-Since version 0.7, the charging limit can be set using Intents. There are two ways for doing so:
-- Using an Intent to Broadcast a message of action *"com.slash.batterychargelimit.CHANGE_LIMIT"*, supplying the percentage by the *Intent extra "android.intent.extra.TEXT"* (Intent.EXTRA_TEXT). For example in Tasker, the extra could look like *android.intent.extra.TEXT:80* to set the limit to 80%. __This is technically more clean and therefore recommended!__
-- Starting Activity *com.slash.batterychargelimit.LimitChangeActivity* with a *ACTION_SEND* intent, using *MIME type "text/x-battery-limit"* and supplying the percentage as String with *Intent extra "android.intent.extra.TEXT"* (Intent.EXTRA_TEXT). __This will cause the receiving Activity to pop up for a short moment. The Intent should be provided with FLAG_ACTIVITY_NO_HISTORY, otherwise the main activity of this app will become the foreground Activity after sending the Intent.__
+**NOTE:** This is app currently requires root to function. While it is not possible to control charging without root, an alarm-based solution might be implemented for no-root users in the future.
+
+## Features
+- Free and open source.
+- Material 3 with dynamic colours.
+- Control when to start and stop charging — either directly or via an widget.
+- Set voltage threshold.
+- Set custom battery control configuration if the supplied ones cannot be used properly.
+
+### Same as ACC?
+`acc` offers a broad range of features which might be too much for some people.
+
+## Troubleshooting
+If BCL cannot start or stop charging correctly, enable **Always Write CTRL File** in the settings.
+
+## Screenshots
+
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" height="500dp" /><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" height="500dp" /><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" height="500dp" />
+
+## License
+
+GNU General Public License v3.0
