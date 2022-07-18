@@ -57,7 +57,6 @@
     <string name="immediate_power_intent_handling_desc">যদি চালু থাকে, পাওয়ার পরিবর্তন স্বয়ংক্রিয়ভাবে ধারণ হয়ে যাবে, যদিওবা কন্ট্রল ফাইল পরিবর্তিত হয়।\n এটা ব্যবহার কর শুধুমাত্র battery_charging_enabled অথবা store_mode এর জন্য!</string>
 
     <string name="hide_toast_on_service_change">সার্ভিস পরিবর্তনের সময় টোস্ট বন্ধ</string>
-    <string name="help_desc">কোন সমস্যা? নিঃসঙ্কোচে গিটহাবে ইস্যু খুলে আমাদের জানাতে পারেন অতবা XDA থ্রেড চেক করুন অতিরিক্ত সেবার জন্য।</string>
 
     <string name="control_file_settings">কন্ট্রল ফাইল তত্ত্ব</string>
     <string name="current_ctrl_data_title">কনফিগারড ফাইল তত্ত্ব</string>

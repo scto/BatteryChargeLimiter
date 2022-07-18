@@ -10,10 +10,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.annotation.WorkerThread
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.preference.PreferenceManager
+import com.google.android.material.internal.ViewUtils.doOnApplyWindowInsets
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.topjohnwu.superuser.Shell
 import io.github.muntashirakon.bcl.Constants.CHARGE_LIMIT_ENABLED
 import io.github.muntashirakon.bcl.Constants.CHARGE_OFF_KEY
 import io.github.muntashirakon.bcl.Constants.CHARGE_ON_KEY
@@ -28,11 +35,11 @@ import io.github.muntashirakon.bcl.Constants.NOTIFICATION_LIVE
 import io.github.muntashirakon.bcl.Constants.SETTINGS
 import io.github.muntashirakon.bcl.activities.MainActivity
 import io.github.muntashirakon.bcl.settings.PrefsFragment
-import eu.chainfire.libsuperuser.Shell
 import java.io.InputStreamReader
 import java.nio.charset.Charset
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+
 
 object Utils {
     private val TAG = Utils::class.java.simpleName
@@ -63,12 +70,6 @@ object Utils {
         return System.currentTimeMillis() <= changePending + tolerance
     }
 
-    var suShell: Shell.Interactive = Shell.Builder().setWantSTDERR(false).useSU().open()
-
-    fun refreshSu() {
-        suShell = Shell.Builder().setWantSTDERR(false).useSU().open()
-    }
-
     val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     fun changeState(context: Context, chargeMode: Int) {
@@ -87,17 +88,19 @@ object Utils {
             switchCommands = arrayOf("echo \"$newState\" > $file")
         } else {
             cfInitialized = true
-            switchCommands = arrayOf("mount -o rw,remount $file", "chmod u+w $file",
-                    "echo \"$newState\" > $file")
+            switchCommands = arrayOf(
+                "mount -o rw,remount $file", "chmod u+w $file",
+                "echo \"$newState\" > $file"
+            )
         }
 
         if (alwaysWrite) {
-            suShell.addCommand(switchCommands)
+            Shell.cmd(switchCommands.joinToString(separator = " && ")).submit()
         } else {
-            suShell.addCommand("cat $file", 0) { _, _, output ->
-                if (output.size == 0 || output[0] != newState) {
+            Shell.cmd("cat $file").submit {
+                if (it.out.size == 0 || it.out[0] != newState) {
                     setChangePending()
-                    suShell.addCommand(switchCommands)
+                    Shell.cmd(switchCommands.joinToString(separator = " && ")).submit()
                 }
             }
         }
@@ -123,6 +126,7 @@ object Utils {
         return ctrlFiles!!
     }
 
+    @WorkerThread
     fun validateCtrlFiles(context: Context) {
         for (cf in getCtrlFiles(context)) {
             cf.validate()
@@ -188,9 +192,9 @@ object Utils {
 //            Toast.makeText(context, R.string.stats_reset_success, Toast.LENGTH_SHORT).show()
 //        } catch (e: Exception) {
 //            Log.i("New reset method failed", e.message, e)
-        // on Exception, fall back to conventional method
-        suShell.addCommand("dumpsys batterystats --reset", 0) { _, exitCode, _ ->
-            if (exitCode == 0) {
+        // On Exception, fall back to conventional method
+        Shell.cmd("dumpsys batterystats --reset").submit {
+            if (it.isSuccess) {
                 Toast.makeText(context, R.string.stats_reset_success, Toast.LENGTH_SHORT).show()
             } else {
                 Log.e(TAG, "Statistics reset failed")
@@ -281,7 +285,7 @@ object Utils {
         }
     }
 
-    fun getCtrlFileData(context: Context): String? {
+    fun getCtrlFileData(context: Context): String {
         val settings = getSettings(context)
         val preferences = getPrefs(context)
 
@@ -320,22 +324,26 @@ object Utils {
         }
     }
 
-    fun setTheme(activity: Activity) {
+    fun setTheme(activity: Activity, splashScreen: Boolean = false) {
         val preferences = getPrefs(activity)
         val getTheme = preferences.getString(PrefsFragment.KEY_THEME, Constants.LIGHT)
-        var theme = R.style.AppThemeLight_NoActionBar
+        var theme = if (splashScreen) R.style.AppTheme_Splash else R.style.AppTheme
+        var nightMode = AppCompatDelegate.MODE_NIGHT_NO
         when (getTheme) {
             Constants.LIGHT -> {
-                theme = R.style.AppThemeLight_NoActionBar
+                nightMode = AppCompatDelegate.MODE_NIGHT_NO
             }
             Constants.DARK -> {
-                theme = R.style.AppThemeDark_NoActionBar
+                nightMode = AppCompatDelegate.MODE_NIGHT_YES
             }
             Constants.BLACK -> {
-                theme = R.style.AppThemeBlack_NoActionBar
+                nightMode = AppCompatDelegate.MODE_NIGHT_YES
+                theme = if (splashScreen) R.style.AppTheme_Splash_Black else R.style.AppTheme_Black
             }
         }
         activity.setTheme(theme)
+        AppCompatDelegate.setDefaultNightMode(nightMode)
+        WindowCompat.setDecorFitsSystemWindows(activity.window, false)
     }
 
     /**
@@ -370,29 +378,26 @@ object Utils {
                 "echo $voltageThreshold > $voltageFile"
             )
         }
-        executor.submit {
-            suShell.addCommand(switchCommands)
-        }
+
+        Shell.cmd(switchCommands.joinToString(separator = " && ")).submit()
         getCurrentVoltageThresholdAsync(context, handler)
     }
 
     fun getCurrentVoltageThresholdAsync(context: Context, handler: Handler?) {
-        executor.submit {
-            val voltageFile = getVoltageFile()
-            suShell.addCommand("cat $voltageFile", 0) { _, _, output ->
-                if (output.size == 0) return@addCommand
-                val voltage = output[0]
-                val sharedPrefs = getSettings(context)
-                if (sharedPrefs.getString(Constants.DEFAULT_VOLTAGE_LIMIT, null) == null) {
-                    sharedPrefs.edit().putString(Constants.DEFAULT_VOLTAGE_LIMIT, voltage).apply()
-                }
-                if (handler == null) return@addCommand
-                val msg = handler.obtainMessage(MainActivity.MSG_UPDATE_VOLTAGE_THRESHOLD)
-                val bundle = Bundle()
-                bundle.putString(MainActivity.VOLTAGE_THRESHOLD, voltage)
-                msg.data = bundle
-                handler.sendMessage(msg)
+        val voltageFile = getVoltageFile()
+        Shell.cmd("cat $voltageFile").submit {
+            if (it.out.size == 0) return@submit
+            val voltage = it.out[0]
+            val sharedPrefs = getSettings(context)
+            if (sharedPrefs.getString(Constants.DEFAULT_VOLTAGE_LIMIT, null) == null) {
+                sharedPrefs.edit().putString(Constants.DEFAULT_VOLTAGE_LIMIT, voltage).apply()
             }
+            if (handler == null) return@submit
+            val msg = handler.obtainMessage(MainActivity.MSG_UPDATE_VOLTAGE_THRESHOLD)
+            val bundle = Bundle()
+            bundle.putString(MainActivity.VOLTAGE_THRESHOLD, voltage)
+            msg.data = bundle
+            handler.sendMessage(msg)
         }
     }
 
@@ -411,5 +416,32 @@ object Utils {
         }
         Log.i(TAG, "$newThreshold not valid. Current threshold: $currentThreshold")
         return false
+    }
+
+    // Copied from App Manager
+    @Suppress("DEPRECATION")
+    fun applyWindowInsetsAsPaddingNoTop(v: View) {
+        doOnApplyWindowInsets(v) { view, insets, initialPadding ->
+            if (!ViewCompat.getFitsSystemWindows(view)) {
+                // Do not add padding if fitsSystemWindows is false
+                return@doOnApplyWindowInsets insets
+            }
+            val top: Int = initialPadding.top
+            val bottom: Int = initialPadding.bottom + insets.systemWindowInsetBottom
+            val isRtl = ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL
+            val systemWindowInsetLeft: Int = insets.systemWindowInsetLeft
+            val systemWindowInsetRight: Int = insets.systemWindowInsetRight
+            var start: Int = initialPadding.start
+            var end: Int = initialPadding.end
+            if (isRtl) {
+                start += systemWindowInsetRight
+                end += systemWindowInsetLeft
+            } else {
+                start += systemWindowInsetLeft
+                end += systemWindowInsetRight
+            }
+            ViewCompat.setPaddingRelative(view, start, top, end, bottom)
+            insets
+        }
     }
 }

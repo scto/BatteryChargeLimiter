@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import com.topjohnwu.superuser.Shell
 import io.github.muntashirakon.bcl.Utils
 
 object CtrlFileHelper {
@@ -18,7 +19,6 @@ object CtrlFileHelper {
         dialog.show()
         Utils.executor.submit {
             Utils.validateCtrlFiles(context)
-            Utils.suShell.waitForIdle()
             handler.post {
                 dialog.dismiss()
                 callback?.run()

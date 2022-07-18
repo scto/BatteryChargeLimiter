@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+
     <ImageButton
         android:id="@+id/enable"
         android:layout_width="wrap_content"
@@ -10,6 +11,5 @@
         android:src="@drawable/widget_disabled"
         android:background="#000000ff"
         android:layout_gravity="center"
-        android:contentDescription="@string/enable"
-        />
+        android:contentDescription="@string/enable" />
 </LinearLayout>

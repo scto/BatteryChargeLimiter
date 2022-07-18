@@ -15,16 +15,18 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher_adaptive"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeLight.NoActionBar">
+        android:name=".App"
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".activities.MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +35,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:exported="true"
             android:name=".LimitChangeActivity"
             android:label="@string/intent_handle_activity">
             <intent-filter>
@@ -43,21 +46,37 @@
         </activity>
         <activity
             android:name=".activities.CustomCtrlFileDataActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/AppThemeLight.NoActionBar" />
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/action_settings"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
 
-        <receiver android:name=".receivers.BootReceiver">
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".receivers.BootReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receivers.PowerConnectionReceiver">
+        <receiver
+            android:name=".receivers.PowerConnectionReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
         <receiver
+            android:exported="true"
             android:name=".receivers.ControlBatteryChargeReceiver"
             android:permission="${applicationId}.permission.CONTROL_BATTERY_CHARGE">
             <intent-filter>
@@ -66,7 +85,9 @@
                 <action android:name="${applicationId}.action.DISABLE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".EnableWidget">
+        <receiver
+            android:name=".EnableWidget"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="${applicationId}.action.TOGGLE" />

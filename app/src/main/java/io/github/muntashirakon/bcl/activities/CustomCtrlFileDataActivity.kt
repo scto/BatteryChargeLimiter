@@ -3,6 +3,7 @@ package io.github.muntashirakon.bcl.activities
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -21,6 +22,9 @@ class CustomCtrlFileDataActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_ctrl_file_data)
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        Utils.applyWindowInsetsAsPaddingNoTop(findViewById(R.id.scrollView))
 
         var customPathData: String? = null
         var customEnabledData: String? = null
@@ -90,5 +94,13 @@ class CustomCtrlFileDataActivity : AppCompatActivity() {
                 "Path Data: $customPathData\nEnable Value: $customEnabledData\nDisabled Value: $customDisabledData"
             Utils.startServiceIfLimitEnabled(this)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

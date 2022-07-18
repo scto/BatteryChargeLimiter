@@ -1,24 +1,16 @@
 package io.github.muntashirakon.bcl.settings
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.AttrRes
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreference
+import androidx.preference.SwitchPreferenceCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.muntashirakon.bcl.Constants
 import io.github.muntashirakon.bcl.R
 import io.github.muntashirakon.bcl.activities.CustomCtrlFileDataActivity
-import io.github.muntashirakon.bcl.activities.MainActivity
 
 class PrefsFragment : PreferenceFragmentCompat() {
 
@@ -29,29 +21,23 @@ class PrefsFragment : PreferenceFragmentCompat() {
         }
 
         if (dialogFragment != null) {
-            val settings = requireView().context.getSharedPreferences(Constants.SETTINGS, 0)
+            val settings = requireContext().getSharedPreferences(Constants.SETTINGS, 0)
             if (!settings.getBoolean("has_opened_ctrl_file", false)) {
-                AlertDialog.Builder(requireView().context)
+                MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.control_file_heads_up_title)
                     .setMessage(R.string.control_file_heads_up_desc)
                     .setCancelable(false)
                     .setPositiveButton(R.string.control_understand) { _, _ ->
                         settings.edit().putBoolean("has_opened_ctrl_file", true).apply()
-                        dialogFragment.setTargetFragment(this, 0)
-                        dialogFragment.show(
-                            this.parentFragmentManager,
-                            ControlFileDialogFragmentCompat::class.java.simpleName
-                        )
-                    }.create().show()
+                        openControlFileDialogFragment(dialogFragment)
+                    }.show()
             } else {
-                dialogFragment.setTargetFragment(this, 0)
-                dialogFragment.show(this.parentFragmentManager, ControlFileDialogFragmentCompat::class.java.simpleName)
+                openControlFileDialogFragment(dialogFragment)
             }
         } else {
             super.onDisplayPreferenceDialog(preference)
         }
     }
-
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences)
@@ -59,7 +45,7 @@ class PrefsFragment : PreferenceFragmentCompat() {
         setHasOptionsMenu(true)
 
         val theme: ListPreference = findPreference("theme")!!
-        val customCtrlFileDataSwitch: SwitchPreference = findPreference("custom_ctrl_file_data")!!
+        val customCtrlFileDataSwitch: SwitchPreferenceCompat = findPreference("custom_ctrl_file_data")!!
         val ctrlFilePreference: ControlFilePreference = findPreference("control_file")!!
         val ctrlFileSetupPreference: Preference = findPreference("custom_ctrl_file_setup")!!
 
@@ -84,14 +70,15 @@ class PrefsFragment : PreferenceFragmentCompat() {
         }
 
         ctrlFileSetupPreference.setOnPreferenceClickListener {
-            AlertDialog.Builder(requireView().context)
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.control_file_alert_title)
                 .setMessage(R.string.control_file_alert_desc)
                 .setCancelable(false)
                 .setPositiveButton(R.string.control_understand) { _, _ ->
-                    val ctrlFileIntent = Intent(requireView().context, CustomCtrlFileDataActivity::class.java)
+                    val ctrlFileIntent = Intent(requireContext(), CustomCtrlFileDataActivity::class.java)
                     startActivity(ctrlFileIntent)
-                }.create().show()
+                }
+                .show()
             true
         }
 
@@ -104,39 +91,11 @@ class PrefsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        view!!.setBackgroundColor(view.context.getColorFromAttr(R.attr.cardColor))
-        return view
-    }
-
-    private fun Context.getColorFromAttr(
-        @AttrRes attrColor: Int,
-        typedValue: TypedValue = TypedValue(),
-        resolveRefs: Boolean = true
-    ): Int {
-        theme.resolveAttribute(attrColor, typedValue, resolveRefs)
-        return typedValue.data
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        val item = menu.findItem(R.id.action_settings)
-        item.isVisible = false
-    }
-
-    override fun onStart() {
-        super.onStart()
-        visible = true
-    }
-
-    override fun onStop() {
-        visible = false
-        super.onStop()
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        (activity as MainActivity).setStatusCTRLFileData()
+    private fun openControlFileDialogFragment(dialogFragment: DialogFragment) {
+        CtrlFileHelper.validateFiles(requireContext()) {
+            dialogFragment.setTargetFragment(this, 0)
+            dialogFragment.show(this.parentFragmentManager, ControlFileDialogFragmentCompat::class.java.simpleName)
+        }
     }
 
     companion object {
@@ -149,11 +108,5 @@ class PrefsFragment : PreferenceFragmentCompat() {
         const val KEY_ALWAYS_WRITE_CF = "always_write_cf"
         const val KEY_DISABLE_AUTO_RECHARGE = "disable_auto_recharge"
         const val KEY_THEME = "theme"
-
-        private var visible = false
-
-        fun settingsVisible(): Boolean {
-            return visible
-        }
     }
 }

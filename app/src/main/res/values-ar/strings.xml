@@ -2,7 +2,6 @@
 <!-- Translation by @ibilux on 04/03/2019 -->
 <resources>
     <string name="action_settings">الإعدادات</string>
-    <string name="xda_thread_title">XDA الموضوع على</string>
     <string name="source_code_title">الشفرة المصدرية</string>
     <string name="about">حول</string>
     <string name="disable_charge_now">تعطيل الشحن الآن</string>
@@ -63,7 +62,6 @@
     <string name="enforce_charge_limit_desc">محاولة إجبار الجهاز للتعرف على التغييرات في ملف التحكم عن طريق تبديل حالته مع تأخير متزايد</string>
     <string name="always_write_cf">الكتابة دائما على ملف CTRL</string>
     <string name="always_write_cf_desc">قم دائمًا بالكتابة فوق ملف التحكم بشكل أعمى، حتى إذا كان يحتوي بالفعل على المحتوى الجديد</string>
-    <string name="help_and_support_title">مساعدة و دعم</string>
 
     <string name="advanced_settings">إعدادات متقدمة</string>
     <string name="immediate_power_intent_handling">التعامل مع أحداث الطاقة دائما</string>
@@ -72,7 +70,6 @@
     <string name="disable_auto_recharge_desc">تجريبي: تمكين هذا الخيار يخفي أيضا الإشعارات بعد الوصول الى الحد. هام: قم بتعطيل هذا الخيار قبل إلغاء التثبيت أو قم بإعادة التشغيل بعد إلغاء التثبيت</string>
 
     <string name="hide_toast_on_service_change">إخفاء الإشعارات عن تغييرات الخدمة</string>
-    <string name="help_desc">هل تواجه مشكلة؟ لا تتردد في فتح قضية على جيتهوب وقم بالتحقق من الموضوع على XDA بعد هذا لمزيد من الدعم!</string>
 
     <string name="control_file_settings">بيانات ملف التحكم</string>
     <string name="current_ctrl_data_title">إعداد ملف البيانات</string>

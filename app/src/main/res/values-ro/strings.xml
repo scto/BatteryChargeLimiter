@@ -2,7 +2,6 @@
 <!-- Translation by Y0lin(XDA username: Y0lin) on 16/08/2018-->
 <resources>
     <string name="action_settings">Setări</string>
-    <string name="xda_thread_title">Postarea de pe XDA</string>
     <string name="source_code_title">Cod sursă</string>
     <string name="about">Despre</string>
     <string name="enable">Activează Battery Charge Limit</string>
@@ -60,14 +59,12 @@
     <string name="enforce_charge_limit_desc">Forţează dispozitivul să recunoască schimbarile făcute fişierului de control prin schimbarea stării cu o viteză crescătoare</string>
     <string name="always_write_cf">Modifică necondiţionat fisierul CTRL</string>
     <string name="always_write_cf_desc">Suprascrie fişierul de control indiferent dacă continutul cel nou este deja prezent</string>
-    <string name="help_and_support_title">Ajutor &amp; Suport</string>
 
     <string name="advanced_settings">Setări avansate</string>
     <string name="immediate_power_intent_handling">Ai grijă mereu de schimbările de curent</string>
     <string name="immediate_power_intent_handling_desc">Schimbările de curent vor fi recunoscute imediat, exact după ce fişierul de control se schimbă.\nSe foloseşte doar pentru fişierele de control compatibile, ca şi battery_charging_enabled sau store_mode!</string>
 
     <string name="hide_toast_on_service_change">Ascunde Toast în schimbările de serviciu</string>
-    <string name="help_desc">Ai întâmpinat vreo problemă? Nu ezita să o postezi pe GitHub şi verifică postul de pe XDA pentru mai mult suport!</string>
 
     <string name="control_file_settings">Fişierul de control</string>
     <string name="current_ctrl_data_title">Fişier configurat</string>

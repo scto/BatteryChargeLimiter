@@ -8,9 +8,9 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import android.widget.Toast
+import com.topjohnwu.superuser.Shell
 import io.github.muntashirakon.bcl.Constants.CHARGE_LIMIT_ENABLED
 import io.github.muntashirakon.bcl.Constants.INTENT_TOGGLE_ACTION
-import eu.chainfire.libsuperuser.Shell
 
 class EnableWidget : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
@@ -26,7 +26,7 @@ class EnableWidget : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == INTENT_TOGGLE_ACTION) {
             val settings = Utils.getSettings(context)
-            if (Shell.SU.available()) {
+            if (Shell.getShell().isRoot) {
                 val enable = !settings.getBoolean(CHARGE_LIMIT_ENABLED, false)
                 settings.edit().putBoolean(CHARGE_LIMIT_ENABLED, enable).apply()
                 if (enable) {

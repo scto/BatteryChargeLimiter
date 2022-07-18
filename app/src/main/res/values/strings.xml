@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Settings</string>
-    <string name="xda_thread_title">XDA Thread</string>
     <string name="source_code_title">Source Code</string>
     <string name="source_code" translatable="false"><a href="https://github.com/sriharshaarangi/BatteryChargeLimit">Source Code</a></string>
     <string name="xda_thread" translatable="false"><a href="https://forum.xda-developers.com/android/apps-games/root-battery-charge-limit-t3557002/">XDA Thread</a></string>
@@ -65,7 +64,6 @@
     <string name="enforce_charge_limit_desc">Attempt to force the device to recognize changes to the control file by toggling its state with an increasing delay</string>
     <string name="always_write_cf">Always Write CTRL File</string>
     <string name="always_write_cf_desc">Always overwrite the control file blindly, even if it already contains the new content</string>
-    <string name="help_and_support_title">Help &amp; Support</string>
 
     <string name="advanced_settings">Advanced Settings</string>
     <string name="immediate_power_intent_handling">Always Handle Power Events</string>
@@ -74,7 +72,6 @@
     <string name="disable_auto_recharge_desc">Experimental: Enabling this option also hides notification after limit reached. Important: Disable this option before uninstalling or reboot after uninstalling</string>
 
     <string name="hide_toast_on_service_change">Hide Toast on Service Changes</string>
-    <string name="help_desc">Experiencing an issue? Feel free to open an issue on GitHub and check the thread on XDA after for more support!</string>
 
     <string name="control_file_settings">Control File Data</string>
     <string name="current_ctrl_data_title">Configured File Data</string>
@@ -104,8 +101,16 @@
     <string name="black">Black - AMOLED</string>
     <string name="current_voltage_threshold">Current Voltage Threshold</string>
     <string name="default_voltage_threshold">Default Voltage Threshold</string>
-    <string name="developers">Developers</string>
-    <string name="translators">Translators</string>
     <string name="control_battery_charge_permission_label">Control battery charge</string>
     <string name="control_battery_charge_permission_description">control battery charge</string>
+    <string name="version">Version</string>
+    <string name="app_author">© 2021—2022 <a href="https://github.com/MuntashirAkon">Muntashir Al-Islam</a></string>
+    <string name="license_title">License</string>
+    <string name="credits_title">Credits</string>
+    <string name="credits_details">To the authors of
+        \n- The Android Open Source Project
+        \n- <a href="https://github.com/sriharshaarangi/BatteryChargeLimit">BatteryChargeLimit</a>
+    </string>
+    <string name="close">Close</string>
+    <string name="voltage_threshold_title">Voltage Threshold (in mV or µV)</string>
 </resources>

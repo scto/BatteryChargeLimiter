@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Einstellungen</string>
-    <string name="xda_thread_title">XDA Thema</string>
     <string name="source_code_title">Quelltext</string>
     <string name="about">Über</string>
     <string name="enable">Aktiviere Battery Charge Limit</string>
@@ -59,7 +58,6 @@
     <string name="enforce_charge_limit_desc">Versuchen, das Gerät zum Einhalten des Limits zu zwingen, indem die Steuerungsdatei mit exp. ansteigender Verzögerung umgeschaltet wird</string>
     <string name="always_write_cf">Steuerungsdatei immer schreiben</string>
     <string name="always_write_cf_desc">Die Steuerungsdatei immer blind überschreiben, auch wenn sie bereits den neuen Inhalt enthält.</string>
-    <string name="help_and_support_title">Hilfe &amp; Unterstützung</string>
 
     <string name="advanced_settings">Profi-Einstellungen</string>
     <string name="immediate_power_intent_handling">Power-Events immer verarbeiten</string>
@@ -67,7 +65,6 @@
      Nur für unterstützte Steuerdateien wie battery_charging_enabled oder store_mode!</string>
 
     <string name="hide_toast_on_service_change">Verstecke Toast bei Änderung der Stromversorgung</string>
-    <string name="help_desc">Ein Problem gefunden? Bitte den Thread bei XDA ansehen und ggf. für weitere Unterstützung auf GitHub ein Issue öffnen!</string>
 
     <string name="control_file_settings">Steuerdatei-Daten</string>
     <string name="current_ctrl_data_title">Konfigurierte Steuerungs-Daten</string>

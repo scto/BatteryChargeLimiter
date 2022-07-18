@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Ayarlar</string>
-    <string name="xda_thread_title">XDA Konusu</string>
     <string name="source_code_title">Kaynak Kodu</string>
     <string name="about">Hakkında</string>
     <string name="enable">Battery Charge Limit\'i Etkinleştir</string>
@@ -59,13 +58,11 @@
     <string name="enforce_charge_limit_desc">Cihazı, durumu giderek artan bir gecikmeyle değiştirerek kontrol dosyasındaki değişiklikleri tanımak için zorlamayı dene</string>
     <string name="always_write_cf">Her Zaman CTRL Dosyasına Yaz</string>
     <string name="always_write_cf_desc">Her zaman yeni içeriği içeriyor olsa bile, kontrol dosyasının körü körüne üzerine yaz</string>
-    <string name="help_and_support_title">Yardım &amp; Destek</string>
     <string name="advanced_settings">Gelişmiş Ayarlar</string>
     <string name="immediate_power_intent_handling">Her Zaman Güç Olaylarını Kullan</string>
     <string name="immediate_power_intent_handling_desc">Güç değişiklikleri doğrudan kontrol dosyası değişikliklerinden sonra bile hemen tanınır.\nSadece battery_charging_enabled veya store_mode gibi desteklenen kontrol dosyaları için kullanın!</string>
 
     <string name="hide_toast_on_service_change">Hizmet Değişikliklerinde Uyarıyı Gizle</string>
-    <string name="help_desc">Bir sorun mu yaşıyorsunuz? GitHub\'da bir sorun açmaktan çekinmeyin ve daha fazla destek için XDA\'daki konuyu kontrol edin!</string>
 
     <string name="control_file_settings">Kontrol Dosyası Verileri</string>
     <string name="current_ctrl_data_title">Yapılandırılmış Dosya Verileri</string>

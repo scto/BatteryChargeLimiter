@@ -18,13 +18,13 @@ class ControlFileDialogFragmentCompat : PreferenceDialogFragmentCompat() {
     private var ctrlFiles = emptyList<ControlFile>()
     private var default = ""
 
-    override fun onCreateDialogView(context: Context?): View {
+    override fun onCreateDialogView(context: Context): View {
         super.onCreateDialogView(context)
         ctrlFiles = Utils.getCtrlFiles(requireContext())
         return ListView(context)
     }
 
-    override fun onBindDialogView(view: View?) {
+    override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
         val v = view as ListView
         default = (preference as ControlFilePreference).getCurrentControlFile()

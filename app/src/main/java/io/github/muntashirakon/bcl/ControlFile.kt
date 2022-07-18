@@ -1,6 +1,8 @@
 package io.github.muntashirakon.bcl
 
 import androidx.annotation.Keep
+import androidx.annotation.WorkerThread
+import com.topjohnwu.superuser.Shell
 
 /**
  * Created by Michael on 31.03.2017.
@@ -40,13 +42,11 @@ class ControlFile {
             return valid
         }
 
+    @WorkerThread
     fun validate() {
-        val suShell = Utils.suShell
         if (!checked) {
-            suShell.addCommand("test -e " + file!!, 0) { _, exitCode, _ ->
-                valid = 0 == exitCode
-                checked = true
-            }
+            valid = Shell.cmd("test -e ${file!!}").exec().isSuccess
+            checked = true
         }
     }
 

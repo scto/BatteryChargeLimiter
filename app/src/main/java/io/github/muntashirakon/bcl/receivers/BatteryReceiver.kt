@@ -102,7 +102,7 @@ class BatteryReceiver(private val service: ForegroundService) : BroadcastReceive
         }, POWER_CHANGE_TOLERANCE_MS)
     }
 
-    override fun onReceive(context: Context?, intent: Intent) {
+    override fun onReceive(context: Context, intent: Intent) {
         // ignore events while trying to fix charging state, see below
         if (Utils.isChangePending(backOffTime * 2)) {
             return

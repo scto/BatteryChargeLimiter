@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Настройки</string>
-    <string name="xda_thread_title">Тема на XDA</string>
     <string name="source_code_title">Исходный код</string>
     <string name="about">О приложении</string>
     <string name="enable">Активировать Battery Charge Limit</string>
@@ -57,14 +56,12 @@
     <string name="enforce_charge_limit_desc">Попытка заставить устройство распознавать изменения в управляющем файле, переключая его состояние с увеличением задержки.</string>
     <string name="always_write_cf">Всегда писать управляющий файл</string>
     <string name="always_write_cf_desc">Всегда писать управляющий файл вслепую, даже если он уже содержит новый контент.</string>
-    <string name="help_and_support_title">Помощь и поддержка</string>
 
     <string name="advanced_settings">Расширенные настройки</string>
     <string name="immediate_power_intent_handling">Всегда обрабатывать события заряда</string>
     <string name="immediate_power_intent_handling_desc">Изменения заряда будут сразу распознаны, даже сразу после изменения управляющего файла. Используйте только поддерживаемые управляющие файлы, такие как battery_charging_enabled или store_mode!</string>
 
     <string name="hide_toast_on_service_change">Hide Toast on Service Changes</string>
-    <string name="help_desc">Испытываете проблему? Не стесняйтесь открывать Issue на GitHub и проверять тему на XDA после получения большей помощи и поддержки!</string>
 
     <string name="control_file_settings">Данные управляющего файла</string>
     <string name="current_ctrl_data_title">Конфигурируемые данные управляющего файла</string>

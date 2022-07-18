@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Configurações</string>
-    <string name="xda_thread_title">Tópico XDA</string>
     <string name="source_code_title">Código Fonte</string>
     <string name="about">Sobre</string>
     <string name="enable">Habilitar Battery Charge Limit</string>
@@ -56,14 +55,12 @@
     <string name="enforce_charge_limit_desc">Tentar forçar que o dispositivo reconheça as alterações ao arquivo de controle ao habilitar este estado com um atraso crescente</string>
     <string name="always_write_cf">Sempre Escrever arquivo de Controle</string>
     <string name="always_write_cf_desc">Sempre sobrescrever o arquivo de controle cegamente, mesmo que já contenha o novo conteúdo</string>
-    <string name="help_and_support_title">Ajuda &amp; Suporte</string>
 
     <string name="advanced_settings">Configurações Avançadas</string>
     <string name="immediate_power_intent_handling">Sempre Lidar com Eventos de Energia</string>
     <string name="immediate_power_intent_handling_desc">As alterações de energia serão reconhecidas imediatamente, mesmo diretamente após alterações no arquivo de controle.\nUse apenas para arquivos de controle suportados como battery_charging_enabled ou store_mode!</string>
 
     <string name="hide_toast_on_service_change">Esconder Toast nas Alterações do Serviço</string>
-    <string name="help_desc">Está com algum problema? Sinta-se à vontade para abrir um issue no GitHub e verificar o tópico no XDA depois para mais suporte!</string>
 
     <string name="control_file_settings">Dados de Arquivo de Controle</string>
     <string name="current_ctrl_data_title">Dados do Arquivos Configurados</string>

@@ -2,7 +2,6 @@
 <resources>
     <string name="source_code_title">Broncode</string>
     <string name="action_settings">Instellingen</string>
-    <string name="xda_thread_title">XDA Thread</string>
     <string name="about">Over</string>
     <string name="enable">Activeer Oplaadlimiet</string>
     <string name="notify">Notificatie wanneer limiet is bereikt</string>
@@ -52,12 +51,10 @@
     <string name="enforce_charge_limit_desc">Probeer het apparaat veranderingen in het besturingsbestand te laten herkennen door de staat regelmatig om te schakelen</string>
     <string name="always_write_cf">Schrijf altijd naar het besturingsbestand</string>
     <string name="always_write_cf_desc">Overschrijf altijd het besturingsbestand ookal bevat het al nieuwe inhoud</string>
-    <string name="help_and_support_title">Help en Ondersteuning</string>
     <string name="advanced_settings">Geavanceerde Instellingen</string>
     <string name="immediate_power_intent_handling">Power Events altijd behandelen</string>
     <string name="immediate_power_intent_handling_desc">Stroomveranderingen worden meteen herkend, zelfs direct nadat het besturingsbestand is gewijzigd. Gebruik alleen voor ondersteunde besturingsbestanden zoals battery_charging_enabled of store_mode!</string>
     <string name="hide_toast_on_service_change">Verberg toast-bericht bij servicewijzigingen</string>
-    <string name="help_desc">Een probleem gevonden? Open een issue op GitHub en kijk op de XDA thread voor meer ondersteuning.</string>
     <string name="control_file_settings">Besturingsbestandsgegevens</string>
     <string name="current_ctrl_data_title">Ingestelde bestandsgegevens</string>
     <string name="control_file_option_summary_on">Door de gebruiker gespecificeerde CTRL-bestandsgegevens die worden gebruikt</string>
