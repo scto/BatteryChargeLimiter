@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.RingtoneManager
+import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
@@ -85,12 +86,13 @@ class ForegroundService : Service() {
 
     fun setNotificationActionText(actionText: String) {
         mNotifyBuilder.clearActions()
-        val pendingIntentOpenApp = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), 0)
+        val flagImmutable: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+        val pendingIntentOpenApp = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), flagImmutable)
         val pendingIntentDisable = PendingIntent.getBroadcast(
             this,
             0,
             Intent(this, ControlBatteryChargeReceiver::class.java).setAction(INTENT_DISABLE_ACTION),
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or flagImmutable
         )
         mNotifyBuilder.addAction(0, actionText, pendingIntentDisable)
             .addAction(0, getString(R.string.open_app), pendingIntentOpenApp)

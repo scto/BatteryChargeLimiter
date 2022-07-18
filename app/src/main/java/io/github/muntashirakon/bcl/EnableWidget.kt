@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.widget.RemoteViews
 import android.widget.Toast
 import com.topjohnwu.superuser.Shell
@@ -61,11 +62,12 @@ class EnableWidget : AppWidgetProvider() {
         }
 
         fun buildButtonPendingIntent(context: Context): PendingIntent {
+            val flagImmutable: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
             return PendingIntent.getBroadcast(
                 context,
                 0,
                 Intent(context, EnableWidget::class.java).setAction(INTENT_TOGGLE_ACTION),
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or flagImmutable
             )
         }
 
