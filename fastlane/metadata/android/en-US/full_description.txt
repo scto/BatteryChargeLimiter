@@ -1,6 +1,6 @@
 <i>Battery Charge Limiter</i> (BCL) is a fork of <b>Battery Charge Limit</b> whose development has been stalled for some time.
 
-<i>This app is a work in progress. If a feature is not working, do not hesitate to file a report.</i>
+<i>This app is a work in progress and currently requires root to operate. If a feature is not working, do not hesitate to file a report.</i>
 
 <b>Features:</b>
 <ul>

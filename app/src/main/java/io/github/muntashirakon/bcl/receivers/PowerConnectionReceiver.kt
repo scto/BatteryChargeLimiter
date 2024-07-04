@@ -20,8 +20,11 @@ import io.github.muntashirakon.bcl.settings.PrefsFragment
  */
 
 class PowerConnectionReceiver : BroadcastReceiver() {
+    private val tag: String = PowerConnectionReceiver::class.java.simpleName
+
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
+        Log.d(tag, "Received action: $action")
 
         Utils.setVoltageThreshold(null, true, context, null)
 
@@ -34,20 +37,20 @@ class PowerConnectionReceiver : BroadcastReceiver() {
                 if (ForegroundService.isRunning
                     || Utils.getPrefs(context).getBoolean(PrefsFragment.KEY_DISABLE_AUTO_RECHARGE, false)
                 ) {
-                    Log.d("Power State", "ACTION_POWER_CONNECTED ignored")
+                    Log.d(tag, "ACTION_POWER_CONNECTED ignored")
                     return
                 }
             } else if (action == Intent.ACTION_POWER_DISCONNECTED) {
-                Log.d("Power State", "ACTION_POWER_DISCONNECTED ignored")
+                Log.d(tag, "ACTION_POWER_DISCONNECTED ignored")
                 return
             }
         }
 
         if (action == Intent.ACTION_POWER_CONNECTED) {
-            Log.d("Power State", "ACTION_POWER_CONNECTED")
+            Log.d(tag, "ACTION_POWER_CONNECTED")
             Utils.startServiceIfLimitEnabled(context)
         } else if (action == Intent.ACTION_POWER_DISCONNECTED) {
-            Log.d("Power State", "ACTION_POWER_DISCONNECTED")
+            Log.d(tag, "ACTION_POWER_DISCONNECTED")
             Utils.stopService(context, false)
         }
     }
