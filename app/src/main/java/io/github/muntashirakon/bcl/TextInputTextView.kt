@@ -7,7 +7,7 @@ import com.google.android.material.textfield.TextInputEditText
 class TextInputTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.editTextStyle
+    defStyleAttr: Int = com.google.android.material.R.attr.editTextStyle
 ) : TextInputEditText(context, attrs, defStyleAttr) {
     init {
         keyListener = null
