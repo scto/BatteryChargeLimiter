@@ -50,7 +50,6 @@
     <string name="intent_invalid">வழங்கப்பட்ட நோக்கம் தவறானது.</string>
     <string name="intent_limit_invalid">வழங்கப்பட்ட வரம்பு தவறானது.</string>
     <string name="intent_limit_accepted">பேட்டரி சார்ஜிங் வரம்பு %1$d%% ஆக மாற்றப்பட்டது.</string>
-    <string name="mime_battery_limit" translatable="false">text/x-battery-limit</string>
 
     <string name="service_enabled"> பேட்டரி வரம்பு சேவை இயக்கப்பட்டது! </string>
     <string name="service_disabled"> பேட்டரி வரம்பு சேவை முடக்கப்பட்டுள்ளது! </string>

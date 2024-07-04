@@ -1,12 +1,15 @@
 package io.github.muntashirakon.bcl
 
+import android.Manifest
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.IBinder
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -115,6 +118,10 @@ class ForegroundService : Service() {
     }
 
     fun updateNotification() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // No permission
+            return
+        }
         notificationManager.notify(notifyID, mNotifyBuilder.build())
     }
 

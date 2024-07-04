@@ -1,6 +1,8 @@
 package io.github.muntashirakon.bcl.activities
 
+import android.Manifest
 import android.content.*
+import android.content.pm.PackageManager
 import android.os.*
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -33,6 +37,11 @@ class MainFragment: Fragment() {
     private lateinit var currentThreshold: String
     private val mHandler = MainHandler(this)
     private var prefs: SharedPreferences? = null
+    private val notificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) {
+            Utils.startServiceIfLimitEnabled(requireContext())
+        } else requireActivity().finishAndRemoveTask()
+    }
 
     private class MainHandler(fragment: MainFragment) : Handler(Looper.getMainLooper()) {
         private val mFragment by lazy(LazyThreadSafetyMode.NONE) { WeakReference(fragment) }
@@ -101,12 +110,6 @@ class MainFragment: Fragment() {
             }
         }
 
-        val isChargeLimitEnabled = settings?.getBoolean(Constants.CHARGE_LIMIT_ENABLED, false)
-
-        if (isChargeLimitEnabled == true && Utils.isPhonePluggedIn(requireContext())) {
-            context?.startService(Intent(requireContext(), ForegroundService::class.java))
-        }
-
         val resetBatteryStatsButton = view.findViewById<Button>(R.id.reset_battery_stats)
 //        val autoResetSwitch = view.findViewById(R.id.auto_stats_reset) as CheckBox
 //        val notificationSound = view.findViewById(R.id.notification_sound) as CheckBox
@@ -145,6 +148,12 @@ class MainFragment: Fragment() {
 //            settings.edit().putBoolean(NOTIFICATION_SOUND, isChecked).apply() }
 
         setStatusCTRLFileData()
+
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
     override fun onAttach(context: Context) {

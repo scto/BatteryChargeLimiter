@@ -1,5 +1,6 @@
 package io.github.muntashirakon.bcl
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -14,6 +15,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.preference.PreferenceManager
@@ -246,20 +248,19 @@ object Utils {
     }
 
     fun startServiceIfLimitEnabled(context: Context) {
-        if (getSettings(context).getBoolean(CHARGE_LIMIT_ENABLED, false)) {
-            if (getPrefs(context).getBoolean(PrefsFragment.KEY_DISABLE_AUTO_RECHARGE, false)) {
-                changeState(context, CHARGE_ON)
-            }
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (isPhonePluggedIn(context)) {
-                    context.startService(Intent(context, ForegroundService::class.java))
-                    // display service enabled Toast message if not disabled in settings
-                    if (!getPrefs(context).getBoolean("hide_toast_on_service_changes", false)) {
-                        Toast.makeText(context, R.string.service_enabled, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }, CHARGING_CHANGE_TOLERANCE_MS)
+        if (!getSettings(context).getBoolean(CHARGE_LIMIT_ENABLED, false)) {
+            return
         }
+        if (getPrefs(context).getBoolean(PrefsFragment.KEY_DISABLE_AUTO_RECHARGE, false)) {
+            changeState(context, CHARGE_ON)
+        }
+        Handler(Looper.getMainLooper()).postDelayed({
+            ContextCompat.startForegroundService(context, Intent(context, ForegroundService::class.java))
+            // display service enabled Toast message if not disabled in settings
+            if (!getPrefs(context).getBoolean("hide_toast_on_service_changes", false)) {
+                Toast.makeText(context, R.string.service_enabled, Toast.LENGTH_SHORT).show()
+            }
+        }, CHARGING_CHANGE_TOLERANCE_MS)
     }
 
     fun getPrefs(context: Context): SharedPreferences {
@@ -419,6 +420,7 @@ object Utils {
     }
 
     // Copied from App Manager
+    @SuppressLint("RestrictedApi")
     @Suppress("DEPRECATION")
     fun applyWindowInsetsAsPaddingNoTop(v: View) {
         doOnApplyWindowInsets(v) { view, insets, initialPadding ->

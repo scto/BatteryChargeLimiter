@@ -50,7 +50,6 @@
     <string name="intent_invalid">提供的 intend 无效。</string>
     <string name="intent_limit_invalid">提供的限制无效。</string>
     <string name="intent_limit_accepted">电池充电限制更改为 %1$d%%。</string>
-    <string name="mime_battery_limit" translatable="false">text/x-battery-limit</string>
 
     <string name="service_enabled"> 电池限制服务已启用！ </string>
     <string name="service_disabled"> 电池限制服务已禁用！ </string>

@@ -17,7 +17,6 @@ class LimitChangeActivity : AppCompatActivity() {
 
         // handle data sent by intent
         val batteryLimitMime = this.getString(R.string.mime_battery_limit)
-        val intent = intent
         if (Intent.ACTION_SEND == intent.action && batteryLimitMime == intent.type) {
             Utils.handleLimitChange(this, intent.extras?.get(Intent.EXTRA_TEXT))
         } else {
